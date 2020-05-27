@@ -13,7 +13,7 @@ public class JoyStick extends Canvas {
 
 
 
-	public JoyStick(@NamedArg("radius_small") Double radius_small, @NamedArg("radius_big") Double radius_big) {
+	public JoyStick(@NamedArg("radius_small") Double radius_small, @NamedArg("radius_big") Double radius_big){
 		this.width = getWidth();
 		System.out.println(getWidth());
 		this.height = getHeight();
