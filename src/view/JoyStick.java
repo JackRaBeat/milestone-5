@@ -14,9 +14,8 @@ public class JoyStick extends Canvas {
 
 
 	public JoyStick(@NamedArg("radius_small") Double radius_small, @NamedArg("radius_big") Double radius_big){
-		this.width = getWidth();
-		System.out.println(getWidth());
-		this.height = getHeight();
+		this.width = getWidth(); //NOT GIVING THE CANVAS SIZE FROM FXML, NEED CHANGES
+		this.height = getHeight(); //NOT GIVING THE CANVAS SIZE FROM FXML, NEED CHANGES
 		this.radius_small = radius_small;
 		this.radius_big = radius_big;
 		this.base_paint="#E3E0E2";
