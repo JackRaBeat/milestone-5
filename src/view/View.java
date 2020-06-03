@@ -2,9 +2,12 @@ package view;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Observer;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Slider;
@@ -21,8 +24,11 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.util.Pair;
+import viewModel.ViewModel;
 
 public class View implements Initializable {
+	
+	ViewModel vm;
 
 	@FXML JoyStick JoyStickCanvas;
 	@FXML Button LoadDataButton;
@@ -30,20 +36,25 @@ public class View implements Initializable {
 	@FXML Button CalculatePathButton;
 	@FXML Canvas GridCanvas;
 	@FXML RadioButton AutoPilotButton;
-	@FXML TextArea CommandLine;
+	@FXML TextArea CommandLineTextArea;
 	@FXML Button ExecuteButton;
 	@FXML TextArea PrintTextArea;
 	@FXML RadioButton ManualButton;
 	@FXML Slider ThrottleSlider;
 	@FXML Slider RudderSlider;
 	
+	
+	
+	
 	@FXML public void onRudderSliderChanged() {
+		if(ManualButton.isSelected() == false) return;
 		System.out.println(RudderSlider.getValue());
-		PrintTextArea.appendText(RudderSlider.getValue() + "\n");
+		vm.RudderSend();
 	}
 	@FXML public void onThrottleSliderChanged() {
+		if(ManualButton.isSelected() == false) return;
 		System.out.println(ThrottleSlider.getValue());
-		PrintTextArea.appendText(ThrottleSlider.getValue() + "\n");
+		vm.throttleSend();
 	}
 	@FXML public void ConnectPressed(){
 		Dialog<Pair<String, String>> dialog = new Dialog<>();
@@ -136,12 +147,31 @@ public class View implements Initializable {
 		});
 	}
 	@FXML public void ExecutePressed() {
-	    System.out.println(CommandLine.getText());
-	    PrintTextArea.appendText(CommandLine.getText() + "\n");
+	    System.out.println(CommandLineTextArea.getText());
+	    PrintTextArea.appendText(CommandLineTextArea.getText() + "\n");
+	    PrintTextArea.appendText(ThrottleSlider.getValue() + "\n");
 	}
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		vm = new ViewModel();
+		vm.commandLineText.bind(CommandLineTextArea.textProperty());
+		vm.rudderVal.bindBidirectional(RudderSlider.valueProperty());
+		vm.throttleVal.bindBidirectional(ThrottleSlider.valueProperty());
+		vm.printAreaText.bindBidirectional(PrintTextArea.textProperty());
+		RudderSlider.setShowTickLabels(true);
+		RudderSlider.setShowTickMarks(true);
+		ThrottleSlider.setShowTickLabels(true);
+		ThrottleSlider.setShowTickMarks(true);
+		RudderSlider.setMajorTickUnit(0.5f);
+		ThrottleSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue <? extends Number >  
+                      observable, Number oldValue, Number newValue) 
+            { 
+                PrintTextArea.setText("Throttle value: " + newValue + '\n'); 
+            }
+            });
+
 		JoyStickCanvas.redraw();
 		PrintTextArea.setEditable(false);
 		ToggleGroup buttonGroup = new ToggleGroup();
