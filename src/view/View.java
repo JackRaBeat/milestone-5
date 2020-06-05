@@ -2,6 +2,7 @@ package view;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -26,7 +27,7 @@ import javafx.stage.FileChooser;
 import javafx.util.Pair;
 import viewModel.ViewModel;
 
-public class View implements Initializable {
+public class View implements Initializable, Observer {
 	
 	ViewModel vm;
 
@@ -39,10 +40,9 @@ public class View implements Initializable {
 	@FXML TextArea CommandLineTextArea;
 	@FXML Button ExecuteButton;
 	@FXML TextArea PrintTextArea;
-	@FXML RadioButton ManualButton;
+	@FXML RadioButton ManualButton;	
 	@FXML Slider ThrottleSlider;
 	@FXML Slider RudderSlider;
-	
 	
 	
 	
@@ -177,5 +177,10 @@ public class View implements Initializable {
 		ToggleGroup buttonGroup = new ToggleGroup();
 		AutoPilotButton.setToggleGroup(buttonGroup);
 		ManualButton.setToggleGroup(buttonGroup);
+	}
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 }
