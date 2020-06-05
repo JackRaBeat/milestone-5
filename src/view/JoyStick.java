@@ -14,28 +14,35 @@ public class JoyStick extends Canvas {
 
 
 	public JoyStick(@NamedArg("radius_small") Double radius_small, @NamedArg("radius_big") Double radius_big){
-		this.width = getWidth(); //NOT GIVING THE CANVAS SIZE FROM FXML, NEED CHANGES
-		this.height = getHeight(); //NOT GIVING THE CANVAS SIZE FROM FXML, NEED CHANGES
+		super();
 		this.radius_small = radius_small;
 		this.radius_big = radius_big;
 		this.base_paint="#E3E0E2";
 		this.ball_paint="#515151";
 	}
 	
+	//the methods are capable of returning the set dimensions only after invoking the constructor.
+	private void setDimensions()
+	{
+	    this.width = getWidth(); 
+		this.height = getHeight();
+	}
+	
+	
 	public void redraw() {		
+		setDimensions();
 		GraphicsContext gc = getGraphicsContext2D();
-		double x=radius_big;
-		double y=radius_big;
-	 
+
+
 		gc.setFill(Paint.valueOf(base_paint));
-		gc.fillOval((width-radius_big)/2+x, (height-radius_big)/2+x, radius_big, radius_big);
+		gc.fillOval((width-radius_big)/2, (height-radius_big)/2, radius_big, radius_big);
 		gc.setFill(Paint.valueOf("#000000"));
-		gc.strokeOval((width-radius_big)/2+x, (height-radius_big)/2+x, radius_big, radius_big);
+		gc.strokeOval((width-radius_big)/2, (height-radius_big)/2, radius_big, radius_big);
 		
 		gc.setFill(Paint.valueOf(ball_paint));
-		gc.fillOval((width-radius_small)/2+y,(height-radius_small)/2+y, radius_small, radius_small);
+		gc.fillOval((width-radius_small)/2,(height-radius_small)/2, radius_small, radius_small);
 		gc.setFill(Paint.valueOf("#000000"));
-		gc.strokeOval((width-radius_small)/2+y,(height-radius_small)/2+y, radius_small, radius_small);
+		gc.strokeOval((width-radius_small)/2,(height-radius_small)/2, radius_small, radius_small);
 				
 	}
 

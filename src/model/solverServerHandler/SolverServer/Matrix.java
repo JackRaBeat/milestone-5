@@ -11,15 +11,9 @@ public class Matrix implements Searchable<Point> {
 	State<Point> initialState;
 	State<Point> goalState;
 	
-	public Matrix()//default CTOR
-	{
-		
-	}
-	
 	public Matrix(Double[][] mat,State<Point> initial,State<Point> goal)
-	{
-		
-		this.mat=(State<Point>[][]) new State<?>[mat.length][mat[0].length];
+	{	
+		this.mat=(State<Point>[][]) new State<?>[mat.length][mat[0].length];//since we cannot allocate a generic data structure of a generic type.
 	 for(int i=0;i<mat.length;i++)
 	 {
 		 for(int j=0;j<mat[i].length;j++)

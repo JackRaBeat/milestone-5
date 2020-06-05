@@ -1,7 +1,7 @@
 package model.solverServerHandler.SolverServer;
 import java.net.*; 
 import java.io.*; 
-public class MySerialServer implements Server {
+public class MySerialServer implements Server {//TODO: handle the timeout with the stop variable.
 	private volatile boolean stop;
 	private int port;
 	public MySerialServer(int port){

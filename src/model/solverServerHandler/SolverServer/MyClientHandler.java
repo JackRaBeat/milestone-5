@@ -18,12 +18,12 @@ import java.awt.Point;
 public class MyClientHandler implements ClientHandler {
 
 		CacheManager<Searchable<Point>,String> cm;
-		Solver<Searchable<Point>, PathSolution<Point>> solver;//TODO: confirm.
+		Solver<Searchable<Point>, PathSolution<Point>> solver;
 		
 		
 		public MyClientHandler() {
 			cm=new FileCacheManager<Point>();
-			solver=new SearcherAdapter<Point>(new BestFirstSearch<Point>());//TODO:inject here the best algorithm.
+			solver=new SearcherAdapter<Point>(new BestFirstSearch<Point>());//suitable algorithm is injected!
 		}
 		
 		
@@ -42,7 +42,7 @@ public class MyClientHandler implements ClientHandler {
 								  		
 				String sol=cm.getSolution(problem);
 				
-				if(sol==null){// check if exists in the cash manager
+				if(sol==null){//check if exists in the cash manager
 					
 					PathSolution<Point> ret=solver.solve(problem);//TODO: add caching functionality after im done with the algoritm
 	     			sol=interpretSolution(ret); //solve the problem

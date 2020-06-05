@@ -6,6 +6,6 @@ import java.util.*;
 public interface Searchable<T> extends Serializable {
 State<T> getInitialState();
 boolean isGoalState(State<T> s);
-List<State<T>> getAllPossibleStates(State<T> s);//successors
+List<State<T>> getAllPossibleStates(State<T> s);//get successors
 
 }

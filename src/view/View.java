@@ -27,33 +27,42 @@ import javafx.stage.FileChooser;
 import javafx.util.Pair;
 import viewModel.ViewModel;
 
-public class View implements Initializable, Observer {
+public class View implements Initializable,Observer {
 	
 	ViewModel vm;
 
-	@FXML JoyStick JoyStickCanvas;
 	@FXML Button LoadDataButton;
 	@FXML Button ConnectButton;
-	@FXML Button CalculatePathButton;
-	@FXML Canvas GridCanvas;
-	@FXML RadioButton AutoPilotButton;
-	@FXML TextArea CommandLineTextArea;
 	@FXML Button ExecuteButton;
+	@FXML Button CalculatePathButton;
+	@FXML RadioButton AutoPilotButton;	
+	@FXML RadioButton ManualButton;
+
+	@FXML JoyStick JoyStickCanvas;//TODO: handle the binding and calculation of those two components.
+	@FXML Canvas GridCanvas;
+		
+	@FXML TextArea CommandLineTextArea;
 	@FXML TextArea PrintTextArea;
-	@FXML RadioButton ManualButton;	
 	@FXML Slider ThrottleSlider;
 	@FXML Slider RudderSlider;
 	
-	
-	
-	@FXML public void onRudderSliderChanged() {
-		if(ManualButton.isSelected() == false) return;
-		System.out.println(RudderSlider.getValue());
-		vm.RudderSend();
+	public void setViewModel(ViewModel vm)
+	{
+		this.vm=vm;
+		vm.rudderVal.bindBidirectional(RudderSlider.valueProperty());
+		vm.throttleVal.bindBidirectional(ThrottleSlider.valueProperty());
+		vm.commandLineText.bind(CommandLineTextArea.textProperty());
+		PrintTextArea.textProperty().bind(vm.printAreaText);
 	}
+	
+	 public void onRudderSliderChanged() {
+		if(ManualButton.isSelected() == false) return;
+		vm.RudderSend(RudderSlider.getValue());
+	}
+	
+		
 	@FXML public void onThrottleSliderChanged() {
 		if(ManualButton.isSelected() == false) return;
-		System.out.println(ThrottleSlider.getValue());
 		vm.throttleSend();
 	}
 	@FXML public void ConnectPressed(){
@@ -154,16 +163,12 @@ public class View implements Initializable, Observer {
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		vm = new ViewModel();
-		vm.commandLineText.bind(CommandLineTextArea.textProperty());
-		vm.rudderVal.bindBidirectional(RudderSlider.valueProperty());
-		vm.throttleVal.bindBidirectional(ThrottleSlider.valueProperty());
-		vm.printAreaText.bindBidirectional(PrintTextArea.textProperty());
 		RudderSlider.setShowTickLabels(true);
 		RudderSlider.setShowTickMarks(true);
 		ThrottleSlider.setShowTickLabels(true);
 		ThrottleSlider.setShowTickMarks(true);
 		RudderSlider.setMajorTickUnit(0.5f);
+		
 		ThrottleSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue <? extends Number >  
                       observable, Number oldValue, Number newValue) 
@@ -179,7 +184,7 @@ public class View implements Initializable, Observer {
 		ManualButton.setToggleGroup(buttonGroup);
 	}
 	@Override
-	public void update(Observable o, Object arg) {
+	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -1,5 +1,5 @@
 package model.solverServerHandler.SolverServer;
-
+//TODO:rewrite this class.
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
