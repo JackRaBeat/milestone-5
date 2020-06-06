@@ -33,7 +33,6 @@ public class JoyStick extends Canvas {
 		setDimensions();
 		GraphicsContext gc = getGraphicsContext2D();
 
-
 		gc.setFill(Paint.valueOf(base_paint));
 		gc.fillOval((width-radius_big)/2, (height-radius_big)/2, radius_big, radius_big);
 		gc.setFill(Paint.valueOf("#000000"));
