@@ -238,6 +238,7 @@ public class View implements Initializable, Observer {
 		ToggleGroup buttonGroup = new ToggleGroup();
 		AutoPilotButton.setToggleGroup(buttonGroup);
 		ManualButton.setToggleGroup(buttonGroup);
+		JoyStickCanvas.setMouseEventHandlers();
 	}
 
 	@Override
