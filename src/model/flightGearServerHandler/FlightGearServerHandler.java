@@ -3,8 +3,9 @@ package model.flightGearServerHandler;
 import model.dataHandler.*;
 
 public class FlightGearServerHandler {
-	DataServer ds;
-	DataClient dc;
+	public DataServer ds;
+	public DataClient dc;
+	
 
 	public FlightGearServerHandler(int serverPort, String ip) {
 		Object lock = new Object();
@@ -15,4 +16,11 @@ public class FlightGearServerHandler {
 		// before trying to present it in the application.
 		dc.connect(serverPort, ip);
 	}
+	
+	
+	
+   
+	
+	
+	
 }

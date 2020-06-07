@@ -3,29 +3,14 @@ package view;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Optional;
-import java.util.ResourceBundle;
-import java.util.Scanner;
-
+import java.util.*;
+import javafx.scene.control.*;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Slider;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -75,7 +60,7 @@ public class View implements Initializable, Observer {
 	public void onRudderSliderChanged() {
 		if (ManualButton.isSelected() == false)
 			return;
-		vm.RudderSend(RudderSlider.getValue());
+		vm.RudderSend();
 	}
 
 	@FXML
@@ -121,8 +106,9 @@ public class View implements Initializable, Observer {
 		Optional<Pair<String, String>> result = dialog.showAndWait();
 
 		result.ifPresent(serverInfo -> {
-			System.out.println("IP=" + serverInfo.getKey() + ", Port=" + serverInfo.getValue());
-			PrintTextArea.appendText("IP=" + serverInfo.getKey() + ", Port=" + serverInfo.getValue() + "\n");
+				//TODO: figure out how to be synchronized with the simulator client-server activation.	
+			
+			vm.connectToSimulator(serverInfo.getKey(),Integer.parseInt(serverInfo.getValue()));
 		});
 	}
 
@@ -203,7 +189,6 @@ public class View implements Initializable, Observer {
 			}
 			return null;
 		});
-
 		Optional<Pair<String, String>> result = dialog.showAndWait();
 
 		result.ifPresent(serverInfo -> {

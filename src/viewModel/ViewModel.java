@@ -28,17 +28,27 @@ public class ViewModel extends Observable implements Observer {
 		elevatorVal = new SimpleDoubleProperty();
 	}
 
-	@Override
-	public void update(Observable arg0, Object arg1) {
 
-	}
-
-	public void RudderSend(double value) {
-		rudderVal.set(value);
+	public void RudderSend() {
+	  	model.setVar(null,rudderVal.get());//TODO:figure out where we hold the paths.
 	}
 
 	public void throttleSend() {
-		// TODO Auto-generated method stub
+		model.setVar(null,throttleVal.get());
+	}
+	
+	public void connectToSimulator(String ip,int port)
+	{
+		model.connectToSimulator(ip, port);
+	}
+	
+	
+	
+	
+	@Override
+	public void update(Observable o, Object arg) {
 
 	}
+	
+	
 }
