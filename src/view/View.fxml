@@ -64,7 +64,7 @@ fx:controller="view.View">
                      <children>
                         <Label rotate="270.0" text="throttle" />
                         <Slider fx:id="ThrottleSlider" maxHeight="200.0" maxWidth="25.0" onMouseReleased ="#onThrottleSliderChanged" orientation="VERTICAL" prefHeight="200.0" prefWidth="25.0" HBox.hgrow="NEVER" />
-					     <JoyStick fx:id="JoyStickCanvas" height="300.0" width="300.0" radius_small="60.0" radius_big="150.0">
+					     <JoyStick fx:id="JoyStickCanvas" height="300.0" width="300.0" radius_small="50.0" radius_big="150.0">
 					     </JoyStick>
                         <Label alignment="CENTER_RIGHT" rotate="90.0" text="← elevator → " />
                      </children>

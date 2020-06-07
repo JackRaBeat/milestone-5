@@ -13,13 +13,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.util.Pair;
 import viewModel.ViewModel;
 
 public class View implements Initializable, Observer {
 
-	Stage stage;
 	ViewModel vm;
 
 	@FXML
@@ -51,9 +49,10 @@ public class View implements Initializable, Observer {
 
 	public void setViewModel(ViewModel vm) {
 		this.vm = vm;
-		vm.rudderVal.bindBidirectional(RudderSlider.valueProperty());
-		vm.throttleVal.bindBidirectional(ThrottleSlider.valueProperty());
-		vm.commandLineText.bind(CommandLineTextArea.textProperty());
+		this.vm.rudderVal.bind(RudderSlider.valueProperty());
+		this.vm.throttleVal.bind(ThrottleSlider.valueProperty());
+		this.vm.commandLineText.bind(CommandLineTextArea.textProperty());
+		this.vm.commandLineText.bind(CommandLineTextArea.textProperty());
 		PrintTextArea.textProperty().bind(vm.printAreaText);
 	}
 
@@ -118,8 +117,7 @@ public class View implements Initializable, Observer {
 		FileChooser fc = new FileChooser();
 		fc.setTitle("load csv File");
 		fc.setInitialDirectory(new File("./resources"));
-		Stage stage = (Stage) GridCanvas.getScene().getWindow();
-		File chosen = fc.showOpenDialog(stage);
+		File chosen = fc.showOpenDialog(null);
 		if (chosen != null) {
 
 			List<String> list = new LinkedList<String>();
@@ -211,14 +209,11 @@ public class View implements Initializable, Observer {
 		ThrottleSlider.setShowTickLabels(true);
 		ThrottleSlider.setShowTickMarks(true);
 		RudderSlider.setMajorTickUnit(0.5f);
-
 		ThrottleSlider.valueProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				PrintTextArea.setText("Throttle value: " + newValue + '\n');
 			}
 		});
-
-		JoyStickCanvas.redraw();
 		PrintTextArea.setEditable(false);
 		ToggleGroup buttonGroup = new ToggleGroup();
 		AutoPilotButton.setToggleGroup(buttonGroup);
