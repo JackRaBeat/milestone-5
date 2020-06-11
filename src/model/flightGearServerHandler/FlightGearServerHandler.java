@@ -1,8 +1,10 @@
 package model.flightGearServerHandler;
 
+import java.util.Observable;
+
 import model.dataHandler.*;
 
-public class FlightGearServerHandler {
+public class FlightGearServerHandler extends Observable {
 	public DataServer ds;
 	public DataClient dc;
 	
@@ -16,11 +18,5 @@ public class FlightGearServerHandler {
 		// before trying to present it in the application.
 		dc.connect(serverPort, ip);
 	}
-	
-	
-	
-   
-	
-	
 	
 }

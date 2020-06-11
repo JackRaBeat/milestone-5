@@ -38,18 +38,18 @@ fx:controller="view.View">
                         <Insets />
                      </VBox.margin>
                   </HBox>
-                  <MapGrid fx:id="GridCanvas" height="400.0" width="400.0" />
+                  <MapGrid fx:id="GridCanvas" height="800.0" width="800.0" />
                </children>
             </VBox>
             <VBox alignment="TOP_CENTER" spacing="10.0" HBox.hgrow="NEVER">
                <children>
                   <RadioButton fx:id="AutoPilotButton" mnemonicParsing="false" text="AutoPilot" VBox.vgrow="NEVER" />
-                  <TextArea fx:id="CommandLineTextArea" prefHeight="300.0" prefWidth="250.0" promptText="write your commands" VBox.vgrow="NEVER">
+                  <TextArea fx:id="CommandLineTextArea" prefHeight="500.0" prefWidth="400.0" promptText="write your commands" VBox.vgrow="NEVER">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin></TextArea>
                   <Button fx:id="ExecuteButton" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#ExecutePressed" text="execute" VBox.vgrow="NEVER" />
-                  <TextArea fx:id="PrintTextArea" prefHeight="200.0" prefWidth="200.0" promptText="PrintTextArea"  editable="false" />
+                  <TextArea fx:id="PrintTextArea" prefHeight="500.0" prefWidth="400.0" promptText="PrintTextArea"  editable="false" />
                </children>
             </VBox>
             <VBox alignment="TOP_CENTER" spacing="10.0" HBox.hgrow="NEVER">
@@ -64,7 +64,7 @@ fx:controller="view.View">
                      <children>
                         <Label rotate="270.0" text="throttle" />
                         <Slider fx:id="ThrottleSlider" maxHeight="200.0" maxWidth="25.0" onMouseReleased ="#onThrottleSliderChanged" orientation="VERTICAL" prefHeight="200.0" prefWidth="25.0" HBox.hgrow="NEVER" />
-					     <JoyStick fx:id="JoyStickCanvas" height="300.0" width="300.0" radius_small="50.0" radius_big="150.0">
+					     <JoyStick fx:id="JoyStickCanvas" height="300.0" width="300.0" radius_small="100.0" radius_big="200.0">
 					     </JoyStick>
                         <Label alignment="CENTER_RIGHT" rotate="90.0" text="← elevator → " />
                      </children>

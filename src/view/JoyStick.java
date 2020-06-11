@@ -4,6 +4,7 @@ import javafx.scene.paint.Paint;
 import javafx.application.Platform;
 import javafx.beans.NamedArg;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
@@ -24,6 +25,8 @@ public class JoyStick extends Canvas {
 		this.ball_paint="#515151";
 		smallX = 0;
 		smallY = 0;
+		elevator = new SimpleDoubleProperty();
+		eileron = new SimpleDoubleProperty();
 		Platform.runLater(()->{
 		    this.width = getWidth(); 
 			this.height = getHeight();
@@ -52,14 +55,18 @@ public class JoyStick extends Canvas {
 	}
 	public void setMouseHandler(MouseEvent e) {
 		double r = Math.sqrt(Math.pow((centerX  - e.getX()),2) + Math.pow((centerY - e.getY()), 2));
-		if(r < ( radius_big - radius_small)/2){
+		if(r < radius_big/2){
 			smallX = e.getX();
 			smallY = e.getY();
 		}
 		else {
-			smallX = ((radius_big - radius_small)/2 * (e.getX() - centerX))/r + centerX;
-			smallY = (( radius_big - radius_small)/2 * (e.getY() - centerY))/r + centerY;
+			smallX = (radius_big/2 * (e.getX() - centerX))/r + centerX;
+			smallY = (radius_big/2 * (e.getY() - centerY))/r + centerY;
+			
 		}
+		elevator.setValue((smallY - centerY)*2/radius_big);
+		eileron.setValue((smallX - centerX)*2/radius_big);
+		System.out.println("elevator: " + elevator.doubleValue() + " eileron: " + eileron.doubleValue());
 		redraw();
 	}
 	
@@ -69,6 +76,9 @@ public class JoyStick extends Canvas {
 		this.setOnMouseReleased((e)->{
 			smallX = centerX;
 			smallY = centerY;
+			elevator.setValue((smallY - centerY)*2/radius_big);
+			eileron.setValue((smallX - centerX)*2/radius_big);
+			System.out.println("elevator: " + elevator.doubleValue() + " eileron: " + eileron.doubleValue());
 			redraw();
 		});
 	}

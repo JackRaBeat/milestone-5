@@ -3,9 +3,11 @@ package view;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.*;
 import javafx.scene.control.*;
 import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.image.Image;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -52,8 +54,9 @@ public class View implements Initializable, Observer {
 		this.vm.rudderVal.bind(RudderSlider.valueProperty());
 		this.vm.throttleVal.bind(ThrottleSlider.valueProperty());
 		this.vm.commandLineText.bind(CommandLineTextArea.textProperty());
-		this.vm.commandLineText.bind(CommandLineTextArea.textProperty());
-		PrintTextArea.textProperty().bind(vm.printAreaText);
+		this.PrintTextArea.textProperty().bind(vm.printAreaText);
+		this.vm.aileronVal.bind(JoyStickCanvas.eileron);
+		this.vm.elevatorVal.bind(JoyStickCanvas.elevator);
 	}
 
 	public void onRudderSliderChanged() {
@@ -137,7 +140,7 @@ public class View implements Initializable, Observer {
 			double initialX=Double.parseDouble(coordinates[0]);
 			double initialY=Double.parseDouble(coordinates[1]);
 			double area=Double.parseDouble(list.get(1).split(",")[0]);
-			
+			System.out.println(initialX + " " + initialY);
 			//Scanning the heights matrix. Each cell is measured by meters.
 			int row = list.size();
 			int col = list.get(2).split(",").length;
@@ -214,6 +217,13 @@ public class View implements Initializable, Observer {
 				PrintTextArea.setText("Throttle value: " + newValue + '\n');
 			}
 		});
+		File planeImageFile = new File("resources/airplane-icon.png");
+		Image planeImage = new Image("file:" + planeImageFile.toURI().getPath());
+		File destinationImageFile = new File("resources/destination-icon.png");
+		Image destinationImage = new Image("file:" + destinationImageFile.toURI().getPath());
+		File arrowImageFile = new File("resources/arrow-icon.png");
+		Image arrowImage = new Image("file:" + arrowImageFile.toURI().getPath());
+		GridCanvas.setImages(planeImage, destinationImage,arrowImage);
 		PrintTextArea.setEditable(false);
 		ToggleGroup buttonGroup = new ToggleGroup();
 		AutoPilotButton.setToggleGroup(buttonGroup);

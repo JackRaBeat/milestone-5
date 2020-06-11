@@ -30,7 +30,7 @@ public class ViewModel extends Observable implements Observer {
 
 
 	public void RudderSend() {
-	  	model.setVar(null,rudderVal.get());//TODO:figure out where we hold the paths.
+	  	model.setVar(null,rudderVal.get()); //TODO:figure out where we hold the paths.
 	}
 
 	public void throttleSend() {
