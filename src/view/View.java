@@ -155,6 +155,11 @@ public class View implements Initializable, Observer {
 			}
 					
 			GridCanvas.setMapData(mapData,initialX,initialY,area);
+			GridCanvas.setOnMouseClicked((e)->{
+				GridCanvas.destinationXcord.set(e.getX());
+				GridCanvas.destinationYcord.set(e.getY());
+				GridCanvas.redraw();
+			});
 		}
 	}
 

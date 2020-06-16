@@ -26,7 +26,14 @@ public class MapGrid extends Canvas {
 	
 //TODO: figure out how the other data members are necessary.
 //TODO: add the plane to the component.	
-
+	public MapGrid() {
+		this.planeXcord = new SimpleDoubleProperty();
+		this.planeYcord = new SimpleDoubleProperty();
+		this.destinationXcord = new SimpleDoubleProperty();
+		this.destinationYcord = new SimpleDoubleProperty();
+		this.solution = new SimpleStringProperty();
+		
+	}
 	public void setImages(Image planeImage, Image destinationImage, Image arrowImage) {
 		this.planeImage = planeImage;
 		this.destinationImage = destinationImage;
@@ -35,11 +42,8 @@ public class MapGrid extends Canvas {
 
 	public void setMapData(int[][] mapData, double initialX, double initialY, double area) {
 		this.mapData = mapData;
-		this.planeXcord = new SimpleDoubleProperty();
-		this.planeYcord = new SimpleDoubleProperty();
-		this.destinationXcord = new SimpleDoubleProperty();
-		this.destinationYcord = new SimpleDoubleProperty();
-		this.solution = new SimpleStringProperty();
+
+		//making a solution to test the redraw() function
 		StringBuilder sb = new StringBuilder("");
 		for(int i = 0 ; i < 100; i++) {
 			if(i % 2 == 0) sb.append("right,");
@@ -49,21 +53,14 @@ public class MapGrid extends Canvas {
 			if(i % 2 == 0) sb.append("right,");
 			else sb.append("up,");
 		}
-
 		this.solution.set(sb.toString());
 		this.planeXcord.set(initialX + this.getWidth()/2);
 		this.planeYcord.set(initialY + this.getHeight()/2);
 		this.destinationXcord.set(this.getWidth()/2 + this.getWidth()/5);
 		this.destinationYcord.set(this.getHeight()/2 + this.getHeight()/5);
 		this.area = area;
-		this.setOnMouseClicked((e)->{
-			destinationXcord.set(e.getX());
-			destinationYcord.set(e.getY());
-			redraw();
-		});
 		redraw();
 	}
-
 	private double calcColorScale() {
 		int max = 0;// finding max height to define our heights scale.
 		for (int i = 0; i < mapData.length; i++) {
@@ -120,15 +117,15 @@ public class MapGrid extends Canvas {
 				}
 			}
 			drawImage(gc,planeImage ,planeXcord.get(), planeYcord.get(), W / mapData[0].length * 10 , H  / mapData[0].length  * 10, 130 /*header*/);
-			drawImage(gc,destinationImage ,destinationXcord.doubleValue(), destinationYcord.doubleValue() /*destinationY*/, W / mapData[0].length * 10 , H  / mapData[0].length  * 10, 360);
+			drawImage(gc,destinationImage ,destinationXcord.doubleValue(), destinationYcord.doubleValue(), W / mapData[0].length * 10 , H  / mapData[0].length  * 10, 0);
 			String sol = solution.get();
 			if(sol != " ") {
 				int desXDataCord = (int) (planeXcord.get() / w);
 				int desYDataCord = (int) (planeYcord.get() / h);
 				String n[] = sol.split(",");
-				int numsToAvg = mapData.length / 10;
+				int numsToAvg = n.length / 15;
 				double avg = 0;
-				for(int i = 0; i <= n.length ; i++)
+				for(int i = 0; i < n.length ; i++)
 				{
 					switch(n[i]) {
 					  case "up":
