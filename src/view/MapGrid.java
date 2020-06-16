@@ -1,8 +1,12 @@
 package view;
 
+import java.util.List;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -10,7 +14,7 @@ import javafx.scene.paint.Paint;
 
 public class MapGrid extends Canvas {
 
-	int[][] mapData;
+	public int[][] mapData;
 	double area;
 	Image planeImage;
 	Image destinationImage;
@@ -18,6 +22,7 @@ public class MapGrid extends Canvas {
 	public DoubleProperty destinationXcord, destinationYcord;
 	public DoubleProperty planeXcord, planeYcord;
 	public IntegerProperty heading;
+	public StringProperty solution;
 	
 //TODO: figure out how the other data members are necessary.
 //TODO: add the plane to the component.	
@@ -34,8 +39,20 @@ public class MapGrid extends Canvas {
 		this.planeYcord = new SimpleDoubleProperty();
 		this.destinationXcord = new SimpleDoubleProperty();
 		this.destinationYcord = new SimpleDoubleProperty();
-		this.planeXcord.set(initialX);
-		this.planeYcord.set(initialY);
+		this.solution = new SimpleStringProperty();
+		StringBuilder sb = new StringBuilder("");
+		for(int i = 0 ; i < 100; i++) {
+			if(i % 2 == 0) sb.append("right,");
+			else sb.append("down,");
+		}
+		for(int i = 0 ; i < 30; i++) {
+			if(i % 2 == 0) sb.append("right,");
+			else sb.append("up,");
+		}
+
+		this.solution.set(sb.toString());
+		this.planeXcord.set(initialX + this.getWidth()/2);
+		this.planeYcord.set(initialY + this.getHeight()/2);
 		this.destinationXcord.set(this.getWidth()/2 + this.getWidth()/5);
 		this.destinationYcord.set(this.getHeight()/2 + this.getHeight()/5);
 		this.area = area;
@@ -100,16 +117,46 @@ public class MapGrid extends Canvas {
 					String color = calcCellColor(mapData[i][j], scale);
 					gc.setFill(Paint.valueOf(color));
 					gc.fillRect(j * w, i * h, w, h);
-
 				}
 			}
-			drawImage(gc,planeImage ,W/2 /*planeXcord*/, H/2 /*planeYcord*/, W / mapData[0].length * 10 , H  / mapData[0].length  * 10, 130 /*header*/);
+			drawImage(gc,planeImage ,planeXcord.get(), planeYcord.get(), W / mapData[0].length * 10 , H  / mapData[0].length  * 10, 130 /*header*/);
 			drawImage(gc,destinationImage ,destinationXcord.doubleValue(), destinationYcord.doubleValue() /*destinationY*/, W / mapData[0].length * 10 , H  / mapData[0].length  * 10, 360);
-			for (int j = 0; j < mapData[0].length/20; j++) {
-				drawImage(gc, arrowImage, H/2 + j * w * 3   ,H/2 + j * h * 3 , w * 2, h * 2, 130);
+			String sol = solution.get();
+			if(sol != " ") {
+				int desXDataCord = (int) (planeXcord.get() / w);
+				int desYDataCord = (int) (planeYcord.get() / h);
+				String n[] = sol.split(",");
+				int numsToAvg = mapData.length / 10;
+				double avg = 0;
+				for(int i = 0; i <= n.length ; i++)
+				{
+					switch(n[i]) {
+					  case "up":
+					    avg +=0;
+					    desYDataCord--;
+					    break;
+					  case "right":
+						  avg +=90;
+						  desXDataCord++;
+					    break;
+					  case "down":
+						  avg += 180;
+						  desYDataCord++;
+						    break;
+					  case "left":
+						  avg += 270;
+						  desXDataCord--;
+						break;
+					}
+					if(i % numsToAvg == numsToAvg - 1) {
+						drawImage(gc,arrowImage,w * desXDataCord, h * desYDataCord, w * 2, h * 2,(int) avg/numsToAvg);
+						avg = 0;
+					}
+				}
+				
+			}
 			}
 		}
 
-	}
 
 }

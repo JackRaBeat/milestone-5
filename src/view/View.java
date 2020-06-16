@@ -212,11 +212,11 @@ public class View implements Initializable, Observer {
 		ThrottleSlider.setShowTickLabels(true);
 		ThrottleSlider.setShowTickMarks(true);
 		RudderSlider.setMajorTickUnit(0.5f);
-		ThrottleSlider.valueProperty().addListener(new ChangeListener<Number>() {
+		/*ThrottleSlider.valueProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				PrintTextArea.setText("Throttle value: " + newValue + '\n');
 			}
-		});
+		});*/
 		File planeImageFile = new File("resources/airplane-icon.png");
 		Image planeImage = new Image("file:" + planeImageFile.toURI().getPath());
 		File destinationImageFile = new File("resources/destination-icon.png");

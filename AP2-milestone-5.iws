@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4fafbc3b-4f42-4328-905f-9d6ddda5c605" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/view/View.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/View.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/View.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AP2-milestone-5.iws" beforeDir="false" afterPath="$PROJECT_DIR$/AP2-milestone-5.iws" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,6 +62,7 @@
       <updated>1590606653891</updated>
       <workItem from="1590606657437" duration="3963000" />
       <workItem from="1590621105891" duration="3000" />
+      <workItem from="1591888672764" duration="595000" />
     </task>
     <servers />
   </component>
