@@ -36,7 +36,7 @@ public class View implements Initializable, Observer {
 	RadioButton ManualButton;
 
 	@FXML
-	JoyStick JoyStickCanvas;// TODO: handle the binding and calculation of those two components.
+	JoyStick JoyStickCanvas;
 	@FXML
 	MapGrid GridCanvas;
 
@@ -57,14 +57,27 @@ public class View implements Initializable, Observer {
 		this.PrintTextArea.textProperty().bind(vm.printAreaText);
 		this.vm.aileronVal.bind(JoyStickCanvas.eileron);
 		this.vm.elevatorVal.bind(JoyStickCanvas.elevator);
-		this.GridCanvas.planeXcord.bind((Bindings.createDoubleBinding(//TODO: remember the (0,0) indention calculations
-				() -> ((vm.planeXCord.doubleValue() / Math.sqrt(GridCanvas.area)) * GridCanvas.getWidth()),
+		this.GridCanvas.planeXcord.bind((Bindings.createDoubleBinding(
+				() -> (((vm.planeXCord.doubleValue()-GridCanvas.initialX) / Math.sqrt(GridCanvas.area)) * GridCanvas.getWidth()),
 				vm.planeXCord)));
 		this.GridCanvas.planeYcord.bind((Bindings.createDoubleBinding(
-				() -> ((vm.planeYCord.doubleValue() / Math.sqrt(GridCanvas.area)) * GridCanvas.getHeight()),
+				() -> (((vm.planeYCord.doubleValue()-GridCanvas.initialY) / Math.sqrt(GridCanvas.area)) * GridCanvas.getHeight()),
 				vm.planeYCord)));
 		
 		this.GridCanvas.heading.bind(this.vm.heading);
+		
+		JoyStickCanvas.eileron.addListener(new ChangeListener<Number>() {			
+			  public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
+			  if (!ManualButton.isSelected()) return;
+				vm.aileronSend();
+			  }});
+		
+		
+		JoyStickCanvas.elevator.addListener(new ChangeListener<Number>() {
+			  public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
+			  if (!ManualButton.isSelected()) return;
+				vm.elevatorSend();
+		}});
 		
 	}
 
@@ -79,8 +92,7 @@ public class View implements Initializable, Observer {
 		vm.throttleSend();
 	}
 	
-	
-	
+	//TODO: add a listener for the binding of those two.
 	public void onAileronChange()
 	{
 	if (ManualButton.isSelected() == false) return;
@@ -92,9 +104,6 @@ public class View implements Initializable, Observer {
 	if (!ManualButton.isSelected()) return;
 	  		
 	}
-	
-	
-
 	
 	
 	@FXML
@@ -180,11 +189,8 @@ public class View implements Initializable, Observer {
       
          
             
-			GridCanvas.setMapData(mapData, area);
+			GridCanvas.setMapData(mapData, area,initialX,initialY);
 			
-		      vm.planeXCord.set(initialX);
-	            vm.planeYCord.set(initialY);
-	            System.out.println("x: "+vm.planeXCord.get()+" y: "+vm.planeYCord.get());
 			GridCanvas.setOnMouseClicked((e) -> {
 				GridCanvas.destinationXcord.set(e.getX());
 				GridCanvas.destinationYcord.set(e.getY());
@@ -249,12 +255,7 @@ public class View implements Initializable, Observer {
 		ThrottleSlider.setShowTickMarks(true);
 		RudderSlider.setMajorTickUnit(0.5f);
 		
-		/*
-		 * ThrottleSlider.valueProperty().addListener(new ChangeListener<Number>() {
-		 * public void changed(ObservableValue<? extends Number> observable, Number
-		 * oldValue, Number newValue) { PrintTextArea.setText("Throttle value: " +
-		 * newValue + '\n'); } });
-		 */
+		 
 		File planeImageFile = new File("resources/airplane-icon.png");
 		Image planeImage = new Image("file:" + planeImageFile.toURI().getPath());
 		File destinationImageFile = new File("resources/destination-icon.png");

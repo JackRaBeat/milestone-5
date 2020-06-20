@@ -17,6 +17,8 @@ public class MapGrid extends Canvas {
 	Image planeImage;
 	Image destinationImage;
 	Image arrowImage;
+	public double initialX;
+	public double initialY;
 	public DoubleProperty destinationXcord, destinationYcord;
 	public DoubleProperty planeXcord, planeYcord;//changes according to the model side 
 	public DoubleProperty heading;
@@ -38,8 +40,10 @@ public class MapGrid extends Canvas {
 		this.arrowImage = arrowImage;
 	}
 
-	public void setMapData(int[][] mapData, double area) {
+	public void setMapData(int[][] mapData, double area,double initialX,double initialY) {
 		this.mapData = mapData;
+		this.initialX=initialX;
+		this.initialY=initialY;
 
 		//making a solution to test the redraw() function
 		StringBuilder sb = new StringBuilder("");
@@ -57,7 +61,7 @@ public class MapGrid extends Canvas {
 		this.destinationXcord.set(this.getWidth()/2 + this.getWidth()/5);
 		this.destinationYcord.set(this.getHeight()/2 + this.getHeight()/5);
 		this.area = area;
-		//redraw();
+		redraw();
 	}
 	private double calcColorScale() {
 		int max = 0;// finding max height to define our heights scale.
@@ -95,9 +99,7 @@ public class MapGrid extends Canvas {
 		gc.restore();
 	}
 	 
-
 	public void redraw() {
-		
 		if (mapData != null) {
 
 			double scale = calcColorScale();

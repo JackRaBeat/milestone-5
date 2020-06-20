@@ -35,6 +35,15 @@ public class ViewModel extends Observable implements Observer {
 	public void throttleSend() {
 		model.setVar("/controls/engines/engine/throttle", throttleVal.get());
 	}
+	
+	public void aileronSend() {
+		model.setVar("/controls/flight/aileron", aileronVal.get());
+	}
+	
+	public void elevatorSend() {
+		model.setVar("/controls/flight/elevator", elevatorVal.get());
+	}
+	
 
 	public void connectToSimulator(String ip, int port) {
 		model.connectToSimulator(ip, port);
