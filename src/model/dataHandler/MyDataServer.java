@@ -43,8 +43,10 @@ public class MyDataServer implements DataServer {
 
 			try {
 				ServerSocket server = new ServerSocket(port);
-				server.setSoTimeout(3000);
+				//server.setSoTimeout(3000);
+				System.out.println("waiting for the cliennt...");
 				Socket aClient = server.accept();
+				System.out.println("CLIENT connected!");
 				InputStream in = aClient.getInputStream();
 				BufferedReader inputFromClient = new BufferedReader(new InputStreamReader(in));
 				

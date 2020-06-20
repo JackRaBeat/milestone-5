@@ -55,7 +55,7 @@ public class View implements Initializable, Observer {
 		this.vm.throttleVal.bind(ThrottleSlider.valueProperty());
 		this.vm.commandLineText.bind(CommandLineTextArea.textProperty());
 		this.PrintTextArea.textProperty().bind(vm.printAreaText);
-		this.vm.aileronVal.bind(JoyStickCanvas.eileron);
+		this.vm.aileronVal.bind(JoyStickCanvas.aileron);
 		this.vm.elevatorVal.bind(JoyStickCanvas.elevator);
 		this.GridCanvas.planeXcord.bind((Bindings.createDoubleBinding(
 				() -> (((vm.planeXCord.doubleValue()-GridCanvas.initialX) / Math.sqrt(GridCanvas.area)) * GridCanvas.getWidth()),
@@ -66,15 +66,15 @@ public class View implements Initializable, Observer {
 		
 		this.GridCanvas.heading.bind(this.vm.heading);
 		
-		JoyStickCanvas.eileron.addListener(new ChangeListener<Number>() {			
-			  public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
+		JoyStickCanvas.aileron.addListener(new ChangeListener<Number>() {		
+			  public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 			  if (!ManualButton.isSelected()) return;
 				vm.aileronSend();
 			  }});
 		
 		
 		JoyStickCanvas.elevator.addListener(new ChangeListener<Number>() {
-			  public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
+			  public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 			  if (!ManualButton.isSelected()) return;
 				vm.elevatorSend();
 		}});

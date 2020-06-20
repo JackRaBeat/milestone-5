@@ -67,7 +67,7 @@ public class JoyStick extends Canvas {
 		elevator.setValue((smallY - centerY)*2/radius_big);
 		aileron.setValue((smallX - centerX)*2/radius_big);
 		
-		System.out.println("elevator: " + elevator.doubleValue() + " eileron: " + eileron.doubleValue());
+		System.out.println("elevator: " + elevator.doubleValue() + " eileron: " + aileron.doubleValue());
 		redraw();
 	}
 	
@@ -79,7 +79,7 @@ public class JoyStick extends Canvas {
 			smallY = centerY;
 			elevator.setValue((smallY - centerY)*2/radius_big);
 			aileron.setValue((smallX - centerX)*2/radius_big);
-			System.out.println("elevator: " + elevator.doubleValue() + " eileron: " + eileron.doubleValue());
+			System.out.println("elevator: " + elevator.doubleValue() + " eileron: " + aileron.doubleValue());
 			redraw();
 		});
 	}
