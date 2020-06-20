@@ -253,9 +253,12 @@ public class View implements Initializable, Observer {
 		RudderSlider.setShowTickMarks(true);
 		ThrottleSlider.setShowTickLabels(true);
 		ThrottleSlider.setShowTickMarks(true);
+		ThrottleSlider.setMajorTickUnit(0.25f);
+		ThrottleSlider.setMinorTickCount(4);
 		RudderSlider.setMajorTickUnit(0.5f);
+		ThrottleSlider.setSnapToTicks(true);
+		RudderSlider.setSnapToTicks(true);
 		
-		 
 		File planeImageFile = new File("resources/airplane-icon.png");
 		Image planeImage = new Image("file:" + planeImageFile.toURI().getPath());
 		File destinationImageFile = new File("resources/destination-icon.png");

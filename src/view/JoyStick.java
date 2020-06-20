@@ -23,8 +23,6 @@ public class JoyStick extends Canvas {
 		this.radius_big = radius_big;
 		this.base_paint="#E3E0E2";
 		this.ball_paint="#515151";
-		smallX = 0;
-		smallY = 0;
 		elevator = new SimpleDoubleProperty();
 		aileron = new SimpleDoubleProperty();
 		Platform.runLater(()->{
@@ -60,14 +58,14 @@ public class JoyStick extends Canvas {
 			smallY = e.getY();
 		}
 		else {
-			smallX = (radius_big/2 * (e.getX() - centerX))/r + centerX;//TODO: get an explenation about this
+			smallX = (radius_big/2 * (e.getX() - centerX))/r + centerX;
 			smallY = (radius_big/2 * (e.getY() - centerY))/r + centerY;
+			smallX = Math.round((smallX*100))/100;
+			smallY =Math.round((smallY*100))/100;
 			
 		}
 		elevator.setValue((smallY - centerY)*2/radius_big);
 		aileron.setValue((smallX - centerX)*2/radius_big);
-		
-		System.out.println("elevator: " + elevator.doubleValue() + " eileron: " + aileron.doubleValue());
 		redraw();
 	}
 	
@@ -77,9 +75,8 @@ public class JoyStick extends Canvas {
 		this.setOnMouseReleased((e)->{
 			smallX = centerX;
 			smallY = centerY;
-			elevator.setValue((smallY - centerY)*2/radius_big);
-			aileron.setValue((smallX - centerX)*2/radius_big);
-			System.out.println("elevator: " + elevator.doubleValue() + " eileron: " + aileron.doubleValue());
+			elevator.setValue(0);
+			aileron.setValue(0);
 			redraw();
 		});
 	}

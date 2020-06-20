@@ -13,10 +13,38 @@ public class MyDataServer implements DataServer {
 	private ConcurrentHashMap<String, Double> values;
 	private volatile boolean open;
 	public static Object lock;
+	public static String[] paths = definePaths();
 	private static class MyServerHolder {
 		public static final MyDataServer ds = new MyDataServer();
 	}
-
+	public static String[] definePaths()
+	{
+		String[] paths=new String[23];
+		paths[0]="/instrumentation/airspeed-indicator/indicated-speed-kt";
+		paths[1]="/instrumentation/altimeter/indicated-altitude-ft";
+		paths[2]="/instrumentation/altimeter/pressure-alt-ft";
+		paths[3]="/instrumentation/attitude-indicator/indicated-pitch-deg";
+		paths[4]="/instrumentation/attitude-indicator/indicated-roll-deg";
+		paths[5]="/instrumentation/attitude-indicator/internal-pitch-deg";
+		paths[6]="/instrumentation/attitude-indicator/internal-roll-deg";
+		paths[7]="/instrumentation/encoder/indicated-altitude-ft";
+		paths[8]="/instrumentation/encoder/pressure-alt-ft";
+		paths[9]="/instrumentation/gps/indicated-altitude-ft";
+		paths[10]="/instrumentation/gps/indicated-ground-speed-kt";
+		paths[11]="/instrumentation/gps/indicated-vertical-speed";
+		paths[12]="/instrumentation/heading-indicator/indicated-heading-deg";
+		paths[13]="/instrumentation/magnetic-compass/indicated-heading-deg";
+		paths[14]="/instrumentation/slip-skid-ball/indicated-slip-skid";
+		paths[15]="/instrumentation/turn-indicator/indicated-turn-rate";
+		paths[16]="/instrumentation/vertical-speed-indicator/indicated-speed-fpm";
+		paths[17]="/controls/flight/aileron";
+		paths[18]="/controls/flight/elevator";
+		paths[19]="/controls/flight/rudder";
+		paths[20]="/controls/flight/flaps";
+		paths[21]="/controls/engines/engine/throttle";
+		paths[22]="/engines/engine/rpm";
+		return paths;
+	}	
 	private MyDataServer() {
 		values = new ConcurrentHashMap<String, Double>();
 		open = false;
@@ -32,7 +60,7 @@ public class MyDataServer implements DataServer {
 	}
 
 	@Override
-	public void open(int port, int freq, String[] paths, Object lock) {
+	public void open(int port, int freq, Object lock) {
 		if (open)
 			return;
 		MyDataServer.lock = lock;
@@ -44,7 +72,7 @@ public class MyDataServer implements DataServer {
 			try {
 				ServerSocket server = new ServerSocket(port);
 				//server.setSoTimeout(3000);
-				System.out.println("waiting for the cliennt...");
+				System.out.println("waiting for the client... (open the simulator)");
 				Socket aClient = server.accept();
 				System.out.println("CLIENT connected!");
 				InputStream in = aClient.getInputStream();
@@ -57,15 +85,15 @@ public class MyDataServer implements DataServer {
 				while (open) {
 					String[] new_values = inputFromClient.readLine().split(",");
 					for (int i = 0; i < new_values.length; i++) {
-						String path = paths[i];
 						double value = Double.parseDouble(new_values[i]);
-						values.put(path, value);
+						Double v = values.get(paths[i]);
+						if((v == null) || !(v.equals(value)))
+							values.put(paths[i], value);
 					}
-
 					Thread.sleep(1000 / freq);
 
 				}
-
+				/*
 				// since the client doesn't let us know the end of the relevant information we
 				// need to keep reading a little more
 				for (int x = 0; x < 10; x++) {
@@ -78,7 +106,7 @@ public class MyDataServer implements DataServer {
 
 					Thread.sleep(1000 / freq);
 				}
-				
+				*/
 				//causes the main thread to wait for all of the relevant information to arrive and then continue.
 				// tell the interpreter thread it's okay to keep going now.
 				DataSynchronizer.resume(lock);

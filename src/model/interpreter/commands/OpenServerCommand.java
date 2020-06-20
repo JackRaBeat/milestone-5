@@ -14,13 +14,8 @@ private DataServer server;
 		int freq=(int)args.get(1);
 		
 		this.server=MyDataServer.getServer();//object created for the first time 
-		String []paths=new String[3];
-		paths[0]="simX";//TODO: DELETE THIS!
-		paths[1]="simY";
-		paths[2]="simZ";
 		Object lock=new Object();//passed to the server to make this thread to wake up when needed 
-		server.open(port,freq,paths,lock);
-		
+		server.open(port,freq,lock);
 		DataSynchronizer.waitForData(lock);//makes sure that our server first opens and recieves data before we might execute instructions
 		//that rely on this data.
 	 	
