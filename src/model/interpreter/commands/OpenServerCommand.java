@@ -15,7 +15,7 @@ private DataServer server;
 		
 		this.server=MyDataServer.getServer();//object created for the first time 
 		String []paths=new String[3];
-		paths[0]="simX";
+		paths[0]="simX";//TODO: DELETE THIS!
 		paths[1]="simY";
 		paths[2]="simZ";
 		Object lock=new Object();//passed to the server to make this thread to wake up when needed 

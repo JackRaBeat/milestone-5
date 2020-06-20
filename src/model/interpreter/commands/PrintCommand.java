@@ -2,11 +2,12 @@ package model.interpreter.commands;
 
 import java.util.List;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import model.interpreter.expressions.ExpressionCalculate;
 
 
 public class PrintCommand implements Command {
-
 	@Override
 	public int getArguments(String[] tokens, int idx, List<Object> emptyList) {
 		return StringToArgumentParser.parse(tokens, idx, 1, emptyList, "String");
@@ -19,9 +20,9 @@ public class PrintCommand implements Command {
 		{
 			str = Double.toString((ExpressionCalculate.invoke(str)));
 		} else {
-			str = str.substring(0, str.length() - 2);
-		}
-		System.out.println(str);
+			str = str.substring(1, str.length()-1);
+		}		
+	  
 	}
 
 }

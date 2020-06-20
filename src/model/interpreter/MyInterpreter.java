@@ -10,7 +10,8 @@ public class MyInterpreter {
 	public static HashMap<String, Var> SymbolTable = new HashMap<String, Var>();
 	public static double returnValue = 0;
 
-	public void interpret(String[] lines) {
+	public void interpret(String text) {
+		String [] lines=text.split("\n");
 		Lexer lexer = Lexer.getInstance();
 		Parser parser = Parser.getInstance();
 		StringJoiner sj = new StringJoiner("\n");

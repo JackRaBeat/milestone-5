@@ -1,7 +1,5 @@
 package view;
 
-import java.util.List;
-
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -20,16 +18,16 @@ public class MapGrid extends Canvas {
 	Image destinationImage;
 	Image arrowImage;
 	public DoubleProperty destinationXcord, destinationYcord;
-	public DoubleProperty planeXcord, planeYcord;
-	public IntegerProperty heading;
+	public DoubleProperty planeXcord, planeYcord;//changes according to the model side 
+	public DoubleProperty heading;
 	public StringProperty solution;
+
 	
-//TODO: figure out how the other data members are necessary.
-//TODO: add the plane to the component.	
 	public MapGrid() {
 		this.planeXcord = new SimpleDoubleProperty();
 		this.planeYcord = new SimpleDoubleProperty();
-		this.destinationXcord = new SimpleDoubleProperty();
+		this.heading=new SimpleDoubleProperty();		
+		this.destinationXcord = new SimpleDoubleProperty();//TODO: make the conversion on the model side so we wont have to mess with it here. 
 		this.destinationYcord = new SimpleDoubleProperty();
 		this.solution = new SimpleStringProperty();
 		
@@ -40,7 +38,7 @@ public class MapGrid extends Canvas {
 		this.arrowImage = arrowImage;
 	}
 
-	public void setMapData(int[][] mapData, double initialX, double initialY, double area) {
+	public void setMapData(int[][] mapData, double area) {
 		this.mapData = mapData;
 
 		//making a solution to test the redraw() function
@@ -53,13 +51,13 @@ public class MapGrid extends Canvas {
 			if(i % 2 == 0) sb.append("right,");
 			else sb.append("up,");
 		}
+		
 		this.solution.set(sb.toString());
-		this.planeXcord.set(initialX + this.getWidth()/2);
-		this.planeYcord.set(initialY + this.getHeight()/2);
+	
 		this.destinationXcord.set(this.getWidth()/2 + this.getWidth()/5);
 		this.destinationYcord.set(this.getHeight()/2 + this.getHeight()/5);
 		this.area = area;
-		redraw();
+		//redraw();
 	}
 	private double calcColorScale() {
 		int max = 0;// finding max height to define our heights scale.
@@ -87,10 +85,11 @@ public class MapGrid extends Canvas {
 		String color = "#" + red + green + "00";
 		return color;
 	}
-	public void drawImage(GraphicsContext gc, Image im, double x, double y ,double w ,double h ,int r) {
+	
+	public void drawImage(GraphicsContext gc, Image im, double x, double y ,double w ,double h ,double d) {
 		gc.save();
 		gc.translate(x, y);
-		gc.rotate(r);
+		gc.rotate(d);
 		gc.translate(-x, -y);
 		gc.drawImage(im, x - w/2, y - h/2, w, h);
 		gc.restore();
@@ -98,6 +97,7 @@ public class MapGrid extends Canvas {
 	 
 
 	public void redraw() {
+		
 		if (mapData != null) {
 
 			double scale = calcColorScale();
@@ -106,20 +106,26 @@ public class MapGrid extends Canvas {
 
 			double w = W / mapData[0].length;
 			double h = H / mapData.length;
-
+    
 			GraphicsContext gc = getGraphicsContext2D();
+			//clearing the whole canvas
 			gc.clearRect(0, 0, this.getWidth(), this.getHeight());
+			//coloring the map-grid
 			for (int i = 0; i < mapData.length; i++) {
 				for (int j = 0; j < mapData[0].length; j++) {
 					String color = calcCellColor(mapData[i][j], scale);
 					gc.setFill(Paint.valueOf(color));
 					gc.fillRect(j * w, i * h, w, h);
-				}
-			}
-			drawImage(gc,planeImage ,planeXcord.get(), planeYcord.get(), W / mapData[0].length * 10 , H  / mapData[0].length  * 10, 130 /*header*/);
+				}			
+			}			
+			
+			drawImage(gc,planeImage ,planeXcord.get(), planeYcord.get(), W / mapData[0].length * 10 , H  / mapData[0].length  * 10,130);
 			drawImage(gc,destinationImage ,destinationXcord.doubleValue(), destinationYcord.doubleValue(), W / mapData[0].length * 10 , H  / mapData[0].length  * 10, 0);
+
+
+			
 			String sol = solution.get();
-			if(sol != " ") {
+			if(sol!=null) {
 				int desXDataCord = (int) (planeXcord.get() / w);
 				int desYDataCord = (int) (planeYcord.get() / h);
 				String n[] = sol.split(",");

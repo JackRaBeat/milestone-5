@@ -60,12 +60,13 @@ public class JoyStick extends Canvas {
 			smallY = e.getY();
 		}
 		else {
-			smallX = (radius_big/2 * (e.getX() - centerX))/r + centerX;
+			smallX = (radius_big/2 * (e.getX() - centerX))/r + centerX;//TODO: get an explenation about this
 			smallY = (radius_big/2 * (e.getY() - centerY))/r + centerY;
 			
 		}
 		elevator.setValue((smallY - centerY)*2/radius_big);
 		eileron.setValue((smallX - centerX)*2/radius_big);
+		
 		System.out.println("elevator: " + elevator.doubleValue() + " eileron: " + eileron.doubleValue());
 		redraw();
 	}

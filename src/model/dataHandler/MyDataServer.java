@@ -50,7 +50,7 @@ public class MyDataServer implements DataServer {
 				
 				//makes sure that the main thread waits for the server to boot-up and function. 
 				// causes the main thread to wake up.
-				DataSynchronizer.resume(lock);
+				DataSynchronizer.resume(lock);//TODO: make sure to synchronize in the first boot-up
 				
 				while (open) {
 					String[] new_values = inputFromClient.readLine().split(",");

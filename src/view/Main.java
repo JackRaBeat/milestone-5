@@ -21,7 +21,7 @@ public class Main extends Application {
 			View v=fxl.getController(); // View
 			v.setViewModel(vm);
 			vm.addObserver(v);
-			Scene scene = new Scene(root,1200,600);
+			Scene scene = new Scene(root,1400,650);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
