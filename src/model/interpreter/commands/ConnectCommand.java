@@ -22,7 +22,7 @@ public class ConnectCommand implements Command {
 			
 			Thread.sleep(50000);
 		    } catch (InterruptedException | IllegalArgumentException e ){e.printStackTrace();}	
-		System.out.println("done sleeping,start interpreting...!");
+		System.out.println("done sleeping, start interpreting...!");
 	}
 
 }

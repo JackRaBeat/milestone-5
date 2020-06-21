@@ -33,7 +33,6 @@ public class Model extends Observable {
 	}
 
 	public void interpretText(String code) {
-		System.out.println(code);
 		interpreter.interpret(code);
 	}
 	

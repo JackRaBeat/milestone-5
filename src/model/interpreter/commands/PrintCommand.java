@@ -17,21 +17,19 @@ public class PrintCommand implements Command {//TODO: provide option to print a 
 	@Override
 	public void doCommand(List<Object> args) {
 		String str = args.get(0).toString();
-		System.out.println("im string from print 111: "+str );
 		if (str.charAt(0) != '"')// meaning, its a variable
 		{
 			str = Double.toString((ExpressionCalculate.invoke(str)));
 		}
 		else {
 			str = str.substring(1, str.length()-1);
-			System.out.println("im string from print: "+str );
 		}		
 	  m.printOutput(str);
 	}
 
 }
 
-//change
+//SCRIPT:
 /*openDataServer 5400 10
 connect 127.0.0.1 5402
 var breaks = bind "/controls/flight/speedbrake"
@@ -47,11 +45,11 @@ var alt = bind "/instrumentation/altimeter/indicated-altitude-ft"
 breaks = 0
 throttle = 1
 var h0 = heading
-while alt < 1000 {
+while alt < 500 {
 rudder = (h0 -heading)/20
 aileron = -roll / 70
 elevator = pitch / 50
 print alt
-sleep 250
+sleep 100
 }
 print "done"*/

@@ -58,16 +58,11 @@ public class ViewModel extends Observable implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		
-		System.out.println("im arg: "+arg.toString());
 		String []data=arg.toString().split(" ");
-	//	for(String s:data) System.out.println("in data!!!!: "+s);
-		
 		String action=data[0];
 		StringJoiner sj=new StringJoiner(" ");
 		for(int i=1;i<data.length;i++) sj.add(data[i]);	
 		String value= sj.toString();
-		System.out.println("action: "+action);
-		System.out.println("value: "+value);
        switch(action)
        {
        case("print"):

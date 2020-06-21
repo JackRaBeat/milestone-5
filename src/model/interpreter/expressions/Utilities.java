@@ -19,11 +19,6 @@ public class Utilities {
 
 	// when calculating all kind of variables are only used regulary.
 	public static Var getVar(String name) {
-System.out.println("var: "+name);
-
-/*for(String o :MyInterpreter.SymbolTable.keySet()) {
-    System.out.println("key: "+o +" value: "+MyInterpreter.SymbolTable.get(o));
-}*/
 
 		if (MyInterpreter.SymbolTable.containsKey(name)) {
 			double value = MyInterpreter.SymbolTable.get(name).calculate();

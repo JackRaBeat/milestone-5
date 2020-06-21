@@ -50,8 +50,6 @@ public abstract class ConditionParser implements Command {
 		}
 		condition=new String[condition_list.size()];
 		condition=condition_list.toArray(condition);
-		System.out.println("our condition: ");
-		for(String s:condition) System.out.print(s);
 
 		int open_curly = 1;
 		int close_curly = 0;

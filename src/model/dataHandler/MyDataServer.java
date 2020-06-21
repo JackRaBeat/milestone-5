@@ -57,12 +57,7 @@ public class MyDataServer implements DataServer {
 	}
 
 	@Override
-	public double get(String path) {
-		/*if (values.get(path) == null)
-		   {
-			DataSynchronizer.waitForData(lock);
-		   }*/
-		System.out.println("get path: "+path);		
+	public double get(String path) {	
 		return values.get(path);
 	}
 
@@ -81,13 +76,13 @@ public class MyDataServer implements DataServer {
 				// server.setSoTimeout(3000);
 				System.out.println("waiting for the client... (open the simulator)");
 				Socket aClient = server.accept();
-				System.out.println("CLIENT connected!");
+				System.out.println("client connected!");
 				InputStream in = aClient.getInputStream();
 				BufferedReader inputFromClient = new BufferedReader(new InputStreamReader(in));
 				
 				//makes sure we get data at least once before trying to access bounded data
 				data_recieve(inputFromClient, freq);
-				System.out.println("got the first data!");
+				System.out.println("got the first set of data!");
 			
 				// makes sure that the main thread waits for the server to boot-up and function.
 				// causes the main thread to wake up.
