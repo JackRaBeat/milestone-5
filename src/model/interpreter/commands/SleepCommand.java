@@ -12,7 +12,7 @@ public class SleepCommand implements Command {
 	@Override
 	public void doCommand(List<Object> args) {		
 		try {
-			long millis=(long)args.get(0);
+			long millis=((Number)args.get(0)).longValue();
 			Thread.sleep(millis);
 		    } catch (InterruptedException | IllegalArgumentException e ) {e.printStackTrace();}				
 	}

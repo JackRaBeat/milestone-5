@@ -21,7 +21,8 @@ public class PrintCommand implements Command {//TODO: provide option to print a 
 		if (str.charAt(0) != '"')// meaning, its a variable
 		{
 			str = Double.toString((ExpressionCalculate.invoke(str)));
-		} else {
+		}
+		else {
 			str = str.substring(1, str.length()-1);
 			System.out.println("im string from print: "+str );
 		}		
@@ -46,8 +47,8 @@ var alt = bind "/instrumentation/altimeter/indicated-altitude-ft"
 breaks = 0
 throttle = 1
 var h0 = heading
-while alt< 1000{
-rudder = (h0 –heading)/20
+while alt < 1000 {
+rudder = (h0 -heading)/20
 aileron = -roll / 70
 elevator = pitch / 50
 print alt

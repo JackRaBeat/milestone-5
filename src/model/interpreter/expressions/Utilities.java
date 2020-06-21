@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import model.interpreter.MyInterpreter;
 import model.interpreter.Variable.RegularVar;
 import model.interpreter.Variable.Var;
+import model.interpreter.commands.CommandsMap;
 
 public class Utilities {
 	public static boolean isDouble(String str) {
@@ -50,6 +51,11 @@ System.out.println("var: "+name);
 			operators.add(")");
 			return !(operators.contains(str));			
 		}
+	}
+	
+	public static boolean IsCmd(String str)
+	{
+		return (CommandsMap.getInstance().get(str)!=null);
 	}
 	
 	

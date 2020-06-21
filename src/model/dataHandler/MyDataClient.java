@@ -24,6 +24,7 @@ public class MyDataClient implements DataClient {
 		try {
 			OutputStream out = connection.getOutputStream();
 			PrintWriter UserOutput = new PrintWriter(out, true);
+			System.out.println("path: "+name);
 			UserOutput.println("set" + " " + name + " " + value);
 			// after i send the value to the server it will make my local symbol-table
 			// change as well

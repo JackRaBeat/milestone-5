@@ -42,6 +42,7 @@ public abstract class ConditionParser implements Command {
 		List<String> condition_list = new LinkedList<String>();
 		int i=idx;
 		for (;;i++) {//TODO: make this more beautiful
+			
 			String token=tokens[i];
 			if (token.equals("{"))
 				break;
@@ -49,7 +50,8 @@ public abstract class ConditionParser implements Command {
 		}
 		condition=new String[condition_list.size()];
 		condition=condition_list.toArray(condition);
-		
+		System.out.println("our condition: ");
+		for(String s:condition) System.out.print(s);
 
 		int open_curly = 1;
 		int close_curly = 0;

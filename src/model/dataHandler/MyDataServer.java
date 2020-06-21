@@ -58,10 +58,11 @@ public class MyDataServer implements DataServer {
 
 	@Override
 	public double get(String path) {
-		if (values.get(path) == null)
+		/*if (values.get(path) == null)
 		   {
 			DataSynchronizer.waitForData(lock);
-		   }
+		   }*/
+		System.out.println("get path: "+path);		
 		return values.get(path);
 	}
 
@@ -120,7 +121,6 @@ public class MyDataServer implements DataServer {
 		try {
 			String[] new_values;
 			new_values = inputFromClient.readLine().split(",");
-
 			for (int i = 0; i < new_values.length; i++) {
 				double value = Double.parseDouble(new_values[i]);
 				Double v = values.get(paths[i]);

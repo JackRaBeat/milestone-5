@@ -33,20 +33,45 @@ public class Lexer {
 			code = code.replaceAll(" *\\" + delimiter + " *", " " + delimiter + " ");
 
 		code = code.replaceAll("= bind", "=bind");
-
-		ArrayList<String> tokens = new ArrayList<String>();
+		
+		ArrayList<String> temp = new ArrayList<String>();
 		Scanner s = new Scanner(code);
 
 		while (s.hasNext())
-			tokens.add(s.next());
+			temp.add(s.next());
 		s.close();
 
+		ArrayList<String> tokens= new ArrayList<String>();
 		ArrayList<String> fixed_code = new ArrayList<String>();
 		ArrayList<String> operators = new ArrayList<String>();
 		operators.add("+");
 		operators.add("-");
 		operators.add("*");
 		operators.add("/");
+		
+		
+		for(int j=0;j<temp.size();j++)
+		{		
+			if(temp.get(j).startsWith(String.valueOf('"'))&&temp.get(j).endsWith(String.valueOf('"'))&&temp.get(j).length()>1)
+			{
+				 tokens.add(temp.get(j));	
+			}
+			else if(temp.get(j).startsWith(String.valueOf('"')))
+			{
+				j++;
+				String token="";
+				while(!temp.get(j).endsWith(String.valueOf('"')))
+				{
+					token+=temp.get(j);
+				  j++;
+				}	
+				
+				tokens.add(token+temp.get(j).substring(0, temp.get(j).length()-1));		
+			}
+			else tokens.add(temp.get(j));		
+		}
+		
+		
 		boolean ex_start = true;
 		int i;
 		for (i = 0; i < tokens.size() - 1; i++) {
@@ -57,7 +82,8 @@ public class Lexer {
 			boolean break2 = token.equals(")") && !operators.contains(token_next) && !token_next.equals(token);
 			boolean break3 = (Utilities.IsVarOrCmd(token) | Utilities.isDouble(token))
 					&& (Utilities.isDouble(token_next) | Utilities.IsVarOrCmd(token_next));
-			if (break1 | break2 | break3) {
+			boolean break4= Utilities.IsCmd(token)&&operators.contains(token_next);
+			if (break1 | break2 | break3| break4) {
 				if (ex_start)// if we are at the beginning
 				{
 					fixed_code.add(token);// not to create duplications
@@ -73,6 +99,7 @@ public class Lexer {
 					ex_start = false;
 				} else// in case we are already concreting
 				{
+					
 					fixed_code.set(fixed_code.size() - 1, value + " " + token_next);
 				}
 
@@ -82,9 +109,12 @@ public class Lexer {
 
 		if (!fixed_code.get(fixed_code.size() - 1).endsWith(tokens.get(i)))
 			fixed_code.add(tokens.get(i));
-
-		String temp[] = fixed_code.toArray(new String[fixed_code.size()]);
-		return temp;
+		
+			
+		String tempo[] = fixed_code.toArray(new String[fixed_code.size()]);
+		
+	
+		return tempo;
 	}
 
 }

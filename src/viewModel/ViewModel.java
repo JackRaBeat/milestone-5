@@ -66,6 +66,7 @@ public class ViewModel extends Observable implements Observer {
 		StringJoiner sj=new StringJoiner(" ");
 		for(int i=1;i<data.length;i++) sj.add(data[i]);	
 		String value= sj.toString();
+		System.out.println("action: "+action);
 		System.out.println("value: "+value);
        switch(action)
        {
