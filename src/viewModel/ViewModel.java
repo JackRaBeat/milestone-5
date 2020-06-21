@@ -1,7 +1,9 @@
 package viewModel;
 
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.StringJoiner;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -33,7 +35,7 @@ public class ViewModel extends Observable implements Observer {
 	}
 
 	public void throttleSend() {
-		model.setVar("/controls/engines/engine/throttle", throttleVal.get());
+		model.setVar("/controls/engines/current-engine/throttle", throttleVal.get());
 	}
 	
 	public void aileronSend() {
@@ -55,7 +57,25 @@ public class ViewModel extends Observable implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-
+		
+		System.out.println("im arg: "+arg.toString());
+		String []data=arg.toString().split(" ");
+	//	for(String s:data) System.out.println("in data!!!!: "+s);
+		
+		String action=data[0];
+		StringJoiner sj=new StringJoiner(" ");
+		for(int i=1;i<data.length;i++) sj.add(data[i]);	
+		String value= sj.toString();
+		System.out.println("value: "+value);
+       switch(action)
+       {
+       case("print"):
+    	   //System.out.println("im invoked!");
+    	   String existing_print=this.printAreaText.get();
+           if(existing_print==null) existing_print="";
+    	   this.printAreaText.set(existing_print+value+"\n");
+         break;
+       }
+	
 	}
-
 }

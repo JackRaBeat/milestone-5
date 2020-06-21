@@ -91,21 +91,7 @@ public class View implements Initializable, Observer {
 		if (!ManualButton.isSelected()) return;
 		vm.throttleSend();
 	}
-	
-	//TODO: add a listener for the binding of those two.
-	public void onAileronChange()
-	{
-	if (ManualButton.isSelected() == false) return;
-	  		
-	}
-	
-	public void onElevatorChange()
-	{
-	if (!ManualButton.isSelected()) return;
-	  		
-	}
-	
-	
+			
 	@FXML
 	public void ConnectPressed() {
 		Dialog<Pair<String, String>> dialog = new Dialog<>();
@@ -186,9 +172,7 @@ public class View implements Initializable, Observer {
 				}
 			}
 			
-      
-         
-            
+                
 			GridCanvas.setMapData(mapData, area,initialX,initialY);
 			
 			GridCanvas.setOnMouseClicked((e) -> {
@@ -249,15 +233,18 @@ public class View implements Initializable, Observer {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		PrintTextArea.setEditable(false);
+		
 		RudderSlider.setShowTickLabels(true);
 		RudderSlider.setShowTickMarks(true);
+		RudderSlider.setMajorTickUnit(0.5f);
+		RudderSlider.setSnapToTicks(true);
+		
 		ThrottleSlider.setShowTickLabels(true);
 		ThrottleSlider.setShowTickMarks(true);
 		ThrottleSlider.setMajorTickUnit(0.25f);
-		ThrottleSlider.setMinorTickCount(4);
-		RudderSlider.setMajorTickUnit(0.5f);
+		ThrottleSlider.setMinorTickCount(4);	
 		ThrottleSlider.setSnapToTicks(true);
-		RudderSlider.setSnapToTicks(true);
+
 		
 		File planeImageFile = new File("resources/airplane-icon.png");
 		Image planeImage = new Image("file:" + planeImageFile.toURI().getPath());

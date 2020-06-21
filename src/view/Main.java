@@ -14,13 +14,14 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Model m = new Model();
+			Model m = Model.getInstance();
 			ViewModel vm = new ViewModel(m);
 			FXMLLoader fxl=new FXMLLoader();
 			AnchorPane root= fxl.load(getClass().getResource("View.fxml").openStream());
 			View v=fxl.getController(); // View
 			v.setViewModel(vm);
 			vm.addObserver(v);
+			m.addObserver(vm);//necessary?
 			Scene scene = new Scene(root,1400,650);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);

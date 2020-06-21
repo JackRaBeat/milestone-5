@@ -18,6 +18,11 @@ public class ConnectCommand implements Command {
 		String ip = args.get(0).toString();
 		int port = (int) args.get(1);
 		client.connect(port, ip);
+		try {
+			
+			Thread.sleep(150000);
+		    } catch (InterruptedException | IllegalArgumentException e ){e.printStackTrace();}	
+		System.out.println("done sleeping,start interpreting...!");
 	}
 
 }

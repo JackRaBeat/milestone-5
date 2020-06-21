@@ -18,8 +18,6 @@ public class Lexer {
 		return LexerHolder.lexer;
 	}
 
-	// TODO: make another lexer method which supports files(?)
-	// TODO: use a regex to break expression tokens properly.
 	// breaks the code into tokens, line by line.
 	public String[] lexer(String code) {
 		ArrayList<String> replacement = new ArrayList<String>();
