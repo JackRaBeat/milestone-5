@@ -29,6 +29,10 @@ public class PrintCommand implements Command {//TODO: provide option to print a 
 
 }
 
+
+/*var throttle = bind "/controls/engines/current-engine/throttle"
+throttle = 0*/
+
 //SCRIPT:
 /*openDataServer 5400 10
 connect 127.0.0.1 5402
