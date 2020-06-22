@@ -65,6 +65,11 @@ public class ViewModel extends Observable implements Observer {
 		model.stop();
 	}
 	
+	public void updateInterpreter(boolean state)
+	{
+		model.updateIntepreter(state);
+	}
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		
