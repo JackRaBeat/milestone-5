@@ -138,7 +138,7 @@ public class View implements Initializable, Observer {
 
 		FileChooser fc = new FileChooser();
 		fc.setTitle("load csv File");
-		fc.setInitialDirectory(new File("./resources"));
+		fc.setInitialDirectory(new File("./resources/maps"));
 		File chosen = fc.showOpenDialog(null);
 		if (chosen != null) {
 
