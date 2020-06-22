@@ -1,6 +1,6 @@
 package viewModel;
 
-import java.util.Arrays;
+
 import java.util.Observable;
 import java.util.Observer;
 import java.util.StringJoiner;
@@ -54,7 +54,17 @@ public class ViewModel extends Observable implements Observer {
 	public void interpretText() {
 		model.interpretText(this.commandLineText.get());
 	}
-
+	
+	public boolean interpreterBusy()
+	{
+		return model.interpreterBusy();
+	}
+	
+	public void stop()
+	{
+		model.stop();
+	}
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		

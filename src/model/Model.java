@@ -43,5 +43,15 @@ public class Model extends Observable {
 		notifyObservers(data);
 	}
 	
+	public boolean interpreterBusy()
+	{
+		return interpreter.interpreterBusy();
+	}
+	
+	public void stop()
+	{
+		interpreter.stop();
+	}
+	
 
 }

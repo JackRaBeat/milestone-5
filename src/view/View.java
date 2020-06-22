@@ -227,6 +227,9 @@ public class View implements Initializable, Observer {
 	@FXML
 	public void ExecutePressed() {
 		if (!AutoPilotButton.isSelected()) return;
+		if (vm.interpreterBusy()) vm.stop();
+//takes down the current thread and allows another new context of interpretation 
+//to run.
 		vm.interpretText();	
 	}
 
@@ -244,7 +247,8 @@ public class View implements Initializable, Observer {
 		ThrottleSlider.setMajorTickUnit(0.25f);
 		ThrottleSlider.setMinorTickCount(4);	
 		ThrottleSlider.setSnapToTicks(true);
-
+		
+     	ManualButton.setOnAction((e)->{vm.stop();});
 		
 		File planeImageFile = new File("resources/airplane-icon.png");
 		Image planeImage = new Image("file:" + planeImageFile.toURI().getPath());

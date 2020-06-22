@@ -27,7 +27,7 @@ public class Parser {
 	    
 		List<Object> args = new ArrayList<Object>();
 		Command c;
-		for (int i = 0; i < tokens.length;i++) {
+		for (int i = 0; i < tokens.length && !MyInterpreter.stop;i++) {
 			args.clear();// re-using an empty list for each command.
 			c = mapper.get(tokens[i]);// check whether the specific token is a command or not.
 			if (c != null) {
