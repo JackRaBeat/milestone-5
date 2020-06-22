@@ -227,7 +227,6 @@ public class View implements Initializable, Observer {
 	@FXML
 	public void ExecutePressed() {
 		if (!AutoPilotButton.isSelected()) return;
-		System.out.println("interpreter busy? "+vm.interpreterBusy());
 		if (vm.interpreterBusy()) vm.stop();
 //takes down the current thread and allows another new context of interpretation 
 //to run.
