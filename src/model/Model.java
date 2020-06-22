@@ -53,11 +53,5 @@ public class Model extends Observable {
 		interpreter.stop();
 	}
 	
-	public void updateIntepreter(boolean state)
-	{
-		MyInterpreter.enabled=state;
-	}
-	
 
 }
-	

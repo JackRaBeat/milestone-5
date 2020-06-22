@@ -227,13 +227,11 @@ public class View implements Initializable, Observer {
 	@FXML
 	public void ExecutePressed() {
 		if (!AutoPilotButton.isSelected()) return;
-		System.out.println("interpreter busy? "+vm.interpreterBusy());
 		if (vm.interpreterBusy()) vm.stop();
 //takes down the current thread and allows another new context of interpretation 
 //to run.
 		vm.interpretText();	
 	}
-	
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -251,7 +249,6 @@ public class View implements Initializable, Observer {
 		ThrottleSlider.setSnapToTicks(true);
 		
      	ManualButton.setOnAction((e)->{vm.stop();});
-     	AutoPilotButton.setOnAction((e)->{vm.updateInterpreter(true);});
 		
 		File planeImageFile = new File("resources/airplane-icon.png");
 		Image planeImage = new Image("file:" + planeImageFile.toURI().getPath());
