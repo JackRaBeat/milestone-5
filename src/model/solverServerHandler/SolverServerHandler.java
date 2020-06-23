@@ -1,5 +1,9 @@
 package model.solverServerHandler;
 
 public class SolverServerHandler {
-//NOT DONE
+	
+	public void connect(String ip, int port) {
+		// TODO Auto-generated method stub
+		
+	}
 }

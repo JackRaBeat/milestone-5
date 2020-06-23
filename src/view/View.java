@@ -54,7 +54,20 @@ public class View implements Initializable, Observer {
 		this.vm.rudderVal.bind(RudderSlider.valueProperty());
 		this.vm.throttleVal.bind(ThrottleSlider.valueProperty());
 		this.vm.commandLineText.bind(CommandLineTextArea.textProperty());
-		this.PrintTextArea.textProperty().bind(vm.printAreaText);
+		PrintTextArea.textProperty().addListener(new ChangeListener<Object>() {
+		    @Override
+		    public void changed(ObservableValue<?> observable, Object oldValue,
+		            Object newValue) {
+		    	PrintTextArea.setScrollTop(Double.MAX_VALUE); //this will scroll to the bottom
+		        //use Double.MIN_VALUE to scroll to the top
+		    }
+		});
+		this.vm.printAreaText.addListener(new ChangeListener<String>() {		
+			  public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				  PrintTextArea.textProperty().set(newValue);
+				  PrintTextArea.appendText("");
+			  }});
+		//this.PrintTextArea.textProperty().bind(vm.printAreaText);
 		this.vm.aileronVal.bind(JoyStickCanvas.aileron);
 		this.vm.elevatorVal.bind(JoyStickCanvas.elevator);
 		this.GridCanvas.planeXcord.bind((Bindings.createDoubleBinding(
@@ -128,7 +141,6 @@ public class View implements Initializable, Observer {
 		Optional<Pair<String, String>> result = dialog.showAndWait();
 
 		result.ifPresent(serverInfo -> {
-
 			vm.connectToSimulator(serverInfo.getKey(), Integer.parseInt(serverInfo.getValue()));
 		});
 	}
@@ -219,8 +231,7 @@ public class View implements Initializable, Observer {
 		Optional<Pair<String, String>> result = dialog.showAndWait();
 
 		result.ifPresent(serverInfo -> {
-			System.out.println("IP=" + serverInfo.getKey() + ", Port=" + serverInfo.getValue());
-			PrintTextArea.appendText("IP=" + serverInfo.getKey() + ", Port=" + serverInfo.getValue() + "\n");
+			vm.connectToSolver(serverInfo.getKey(),Integer.parseInt(serverInfo.getValue()));
 		});
 	}
 
@@ -230,7 +241,9 @@ public class View implements Initializable, Observer {
 		if (vm.interpreterBusy()) vm.stop();
 //takes down the current thread and allows another new context of interpretation 
 //to run.
-		vm.interpretText();	
+		vm.printAreaText.set("");
+		vm.interpretText();
+
 	}
 	
 
