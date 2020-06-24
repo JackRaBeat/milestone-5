@@ -7,7 +7,9 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.StringJoiner;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -19,6 +21,7 @@ public class ViewModel extends Observable implements Observer {
 	public DoubleProperty throttleVal, rudderVal, planeXCord, planeYCord, aileronVal, elevatorVal;
 	public DoubleProperty heading;
 	volatile boolean dataServAvailable;
+	public BooleanProperty serverUp;
 	Model model;
 
 	public ViewModel(Model model) {
@@ -32,6 +35,7 @@ public class ViewModel extends Observable implements Observer {
 		aileronVal = new SimpleDoubleProperty();
 		elevatorVal = new SimpleDoubleProperty();
 		heading = new SimpleDoubleProperty();
+		serverUp = new SimpleBooleanProperty(false);
 		dataServAvailable = false;
 	}
 
@@ -50,6 +54,8 @@ public class ViewModel extends Observable implements Observer {
 	public void elevatorSend() {
 		model.setVar("/controls/flight/elevator", elevatorVal.get());
 	}
+	
+	
 	
 
 	public void connectToSimulator(String ip, int port) {
@@ -86,28 +92,27 @@ public class ViewModel extends Observable implements Observer {
        switch(action)
        {
        case("print"):
-    	   //System.out.println("im invoked!");
     	   String existing_print=this.printAreaText.get();
            if(existing_print==null) existing_print="";
+          System.out.println("text: "+existing_print+value+"\n");
     	   this.printAreaText.set(existing_print+value+"\n");
          break;
        case("DataServerAvailable"):
+    	   serverUp.setValue(true);
     	   dataServAvailable = true;
+       //inform Eli we added those 2 variables to generic_small
+    	   System.out.println("hey im here!!!");
     	  new Thread(()->{
     		   while(dataServAvailable) {
-    			   //planeXCord.set(model.fliGearServerHandler.ds.get(/*"planeXCord path??"*/));
-    			   //planeYCord.set(model.fliGearServerHandler.ds.get(/*"planeYCord path??"*/));
-    			   heading.set(model.fliGearServerHandler.ds.get("/instrumentation/magnetic-compass/indicated-heading-deg"));
+    			   planeXCord.set(model.getPlaneXCord());
+    			   planeYCord.set(model.getPlaneYCord());
+    			   heading.set(model.getHeading());
     			   try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+					Thread.sleep(250);
+				} catch (InterruptedException e) {e.printStackTrace();}
     		   }
-    	   }).start();
+    		   }).start();
        }
-	
 	}
 
 	public void connectToSolver(String ip, int port) {
@@ -116,7 +121,6 @@ public class ViewModel extends Observable implements Observer {
 		try {
 			runTime.exec("java -classpath " + planeImageFile.toURI().getPath());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		model.connectToSolver(ip, port);

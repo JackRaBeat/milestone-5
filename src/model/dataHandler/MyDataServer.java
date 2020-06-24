@@ -22,7 +22,7 @@ public class MyDataServer implements DataServer {
 	}
 
 	public static String[] definePaths() {
-		String[] paths = new String[23];
+		String[] paths = new String[25];
 		paths[0] = "/instrumentation/airspeed-indicator/indicated-speed-kt";
 		paths[1] = "/instrumentation/altimeter/indicated-altitude-ft";
 		paths[2] = "/instrumentation/altimeter/pressure-alt-ft";
@@ -46,6 +46,8 @@ public class MyDataServer implements DataServer {
 		paths[20] = "/controls/flight/flaps";
 		paths[21] = "/controls/engines/engine/throttle";
 		paths[22] = "/engines/engine/rpm";
+		paths[23]= "position/logtitude-deg";
+		paths[24]="position/latitude-deg";
 		return paths;
 	}
 
@@ -77,8 +79,10 @@ public class MyDataServer implements DataServer {
 				ServerSocket server = new ServerSocket(port);
 				// server.setSoTimeout(3000);
 				System.out.println("waiting for the client... (open the simulator)");
+				System.out.println("trying to connect..!");
 				Socket aClient = server.accept();
 				System.out.println("client connected!");
+				System.out.println("helllo!");
 				InputStream in = aClient.getInputStream();
 				BufferedReader inputFromClient = new BufferedReader(new InputStreamReader(in));
 				

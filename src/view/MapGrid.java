@@ -1,7 +1,9 @@
 package view;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -23,15 +25,17 @@ public class MapGrid extends Canvas {
 	public DoubleProperty planeXcord, planeYcord;//changes according to the model side 
 	public DoubleProperty heading;
 	public StringProperty solution;
+	public BooleanProperty serverUp;
 
 	
 	public MapGrid() {
 		this.planeXcord = new SimpleDoubleProperty();
 		this.planeYcord = new SimpleDoubleProperty();
 		this.heading=new SimpleDoubleProperty();		
-		this.destinationXcord = new SimpleDoubleProperty();//TODO: make the conversion on the model side so we wont have to mess with it here. 
-		this.destinationYcord = new SimpleDoubleProperty();
-		this.solution = new SimpleStringProperty();
+		//this.destinationXcord = new SimpleDoubleProperty();//TODO: make the conversion on the model side so we wont have to mess with it here. 
+		//this.destinationYcord = new SimpleDoubleProperty();
+		//this.solution = new SimpleStringProperty();
+		this.serverUp = new SimpleBooleanProperty();
 		
 	}
 	public void setImages(Image planeImage, Image destinationImage, Image arrowImage) {
@@ -44,7 +48,7 @@ public class MapGrid extends Canvas {
 		this.mapData = mapData;
 		this.initialX=initialX;
 		this.initialY=initialY;
-
+/*
 		//making a solution to test the redraw() function
 		StringBuilder sb = new StringBuilder("");
 		for(int i = 0 ; i < 100; i++) {
@@ -59,7 +63,7 @@ public class MapGrid extends Canvas {
 		this.solution.set(sb.toString());
 	
 		this.destinationXcord.set(this.getWidth()/2 + this.getWidth()/5);
-		this.destinationYcord.set(this.getHeight()/2 + this.getHeight()/5);
+		this.destinationYcord.set(this.getHeight()/2 + this.getHeight()/5);*/
 		this.area = area;
 		redraw();
 	}
@@ -91,6 +95,7 @@ public class MapGrid extends Canvas {
 	}
 	
 	public void drawImage(GraphicsContext gc, Image im, double x, double y ,double w ,double h ,double d) {
+		if(!serverUp.get()) return;
 		gc.save();
 		gc.translate(x, y);
 		gc.rotate(d);
@@ -120,13 +125,13 @@ public class MapGrid extends Canvas {
 					gc.fillRect(j * w, i * h, w, h);
 				}			
 			}			
-			
-			drawImage(gc,planeImage ,planeXcord.get(), planeYcord.get(), W / mapData[0].length * 10 , H  / mapData[0].length  * 10,130);
-			drawImage(gc,destinationImage ,destinationXcord.doubleValue(), destinationYcord.doubleValue(), W / mapData[0].length * 10 , H  / mapData[0].length  * 10, 0);
+			 
+			drawImage(gc,planeImage ,planeXcord.get(), planeYcord.get(), W / mapData[0].length * 10 , H  / mapData[0].length  * 10,heading.get());
+			//drawImage(gc,destinationImage ,destinationXcord.doubleValue(), destinationYcord.doubleValue(), W / mapData[0].length * 10 , H  / mapData[0].length  * 10, 0);
 
 
 			
-			String sol = solution.get();
+			/*String sol = solution.get();
 			if(sol!=null) {
 				int desXDataCord = (int) (planeXcord.get() / w);
 				int desYDataCord = (int) (planeYcord.get() / h);
@@ -159,7 +164,7 @@ public class MapGrid extends Canvas {
 					}
 				}
 				
-			}
+			}*/
 			}
 		}
 

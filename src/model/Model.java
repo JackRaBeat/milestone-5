@@ -69,6 +69,19 @@ public class Model extends Observable {
 		notifyObservers(data);
 	}
 	
+	public double getHeading()
+	{
+		return fliGearServerHandler.ds.get("/instrumentation/magnetic-compass/indicated-heading-deg");
+	}
+	public double getPlaneXCord()
+	{
+		return fliGearServerHandler.ds.get("position/latitude-deg");
+	}
+	public double getPlaneYCord()
+	{
+		return fliGearServerHandler.ds.get("position/logtitude-deg");
+	}
+	
 //SCRIPT:
 /*openDataServer 5400 10
 connect 127.0.0.1 5402

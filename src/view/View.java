@@ -65,20 +65,14 @@ public class View implements Initializable, Observer {
 		this.vm.printAreaText.addListener(new ChangeListener<String>() {		
 			  public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				  PrintTextArea.textProperty().set(newValue);
-				  PrintTextArea.appendText("");
+				 // PrintTextArea.appendText("");
 			  }});
-		//this.PrintTextArea.textProperty().bind(vm.printAreaText);
+		
 		this.vm.aileronVal.bind(JoyStickCanvas.aileron);
 		this.vm.elevatorVal.bind(JoyStickCanvas.elevator);
-		this.GridCanvas.planeXcord.bind((Bindings.createDoubleBinding(
-				() -> (((vm.planeXCord.doubleValue()-GridCanvas.initialX) / Math.sqrt(GridCanvas.area)) * GridCanvas.getWidth()),
-				vm.planeXCord)));
-		this.GridCanvas.planeYcord.bind((Bindings.createDoubleBinding(
-				() -> (((vm.planeYCord.doubleValue()-GridCanvas.initialY) / Math.sqrt(GridCanvas.area)) * GridCanvas.getHeight()),
-				vm.planeYCord)));
 		
 		this.GridCanvas.heading.bind(this.vm.heading);
-		
+		this.GridCanvas.serverUp.bind(this.vm.serverUp);
 		JoyStickCanvas.aileron.addListener(new ChangeListener<Number>() {		
 			  public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 			  if (!ManualButton.isSelected()) return;
@@ -105,7 +99,7 @@ public class View implements Initializable, Observer {
 		vm.throttleSend();
 	}
 			
-	@FXML
+	@FXML 
 	public void ConnectPressed() {
 		Dialog<Pair<String, String>> dialog = new Dialog<>();
 		dialog.setTitle("FlightGear Server connection");
@@ -184,8 +178,25 @@ public class View implements Initializable, Observer {
 				}
 			}
 			
-                
+              //this binding is relevant just after the map has loaded.  
 			GridCanvas.setMapData(mapData, area,initialX,initialY);
+			this.GridCanvas.planeXcord.bind((Bindings.createDoubleBinding(
+					() -> ((
+							(vm.planeXCord.doubleValue()-GridCanvas.initialX) / Math.sqrt(GridCanvas.area)) * GridCanvas.getWidth()),
+					vm.planeXCord)));
+			this.GridCanvas.planeYcord.bind((Bindings.createDoubleBinding(
+					() -> (((vm.planeYCord.doubleValue()-GridCanvas.initialY) / Math.sqrt(GridCanvas.area)) * GridCanvas.getHeight()),
+					vm.planeYCord)));
+			
+
+			//whenever positions change, redraw the map.
+			GridCanvas.planeXcord.addListener(new ChangeListener<Object>() {
+			    @Override
+			    public void changed(ObservableValue<?> observable, Object oldValue,
+			            Object newValue) {
+			       GridCanvas.redraw();
+			    }
+			});
 			
 			GridCanvas.setOnMouseClicked((e) -> {
 				GridCanvas.destinationXcord.set(e.getX());

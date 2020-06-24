@@ -43,6 +43,7 @@ public class MyInterpreter {
 			String[] tokens = lexer.lexer(code);
 			parser.parse(tokens);
 			is_busy=false;
+			stop=true;
 		});
 		interpretation_thread.start();
 	}
