@@ -95,13 +95,13 @@ public class MapGrid extends Canvas {
 	}
 	
 	public void drawImage(GraphicsContext gc, Image im, double x, double y ,double w ,double h ,double d) {
-		if(!serverUp.get()) return;
+		/*if(!serverUp.get()) return;
 		gc.save();
 		gc.translate(x, y);
 		gc.rotate(d);
 		gc.translate(-x, -y);
 		gc.drawImage(im, x - w/2, y - h/2, w, h);
-		gc.restore();
+		gc.restore();*/
 	}
 	 
 	public void redraw() {

@@ -20,7 +20,7 @@ public class ConnectCommand implements Command {
 		client.connect(port, ip);
 		try {
 			
-			Thread.sleep(40000);
+			Thread.sleep(55000);
 		    } catch (InterruptedException | IllegalArgumentException e ){e.printStackTrace();}	
 		System.out.println("done sleeping, start interpreting...!");
 	}

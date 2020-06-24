@@ -94,7 +94,6 @@ public class ViewModel extends Observable implements Observer {
        case("print"):
     	   String existing_print=this.printAreaText.get();
            if(existing_print==null) existing_print="";
-          System.out.println("text: "+existing_print+value+"\n");
     	   this.printAreaText.set(existing_print+value+"\n");
          break;
        case("DataServerAvailable"):
@@ -108,7 +107,7 @@ public class ViewModel extends Observable implements Observer {
     			   planeYCord.set(model.getPlaneYCord());
     			   heading.set(model.getHeading());
     			   try {
-					Thread.sleep(250);
+					Thread.sleep(2000);
 				} catch (InterruptedException e) {e.printStackTrace();}
     		   }
     		   }).start();

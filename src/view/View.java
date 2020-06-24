@@ -65,7 +65,7 @@ public class View implements Initializable, Observer {
 		this.vm.printAreaText.addListener(new ChangeListener<String>() {		
 			  public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				  PrintTextArea.textProperty().set(newValue);
-				 // PrintTextArea.appendText("");
+				  PrintTextArea.appendText("");
 			  }});
 		
 		this.vm.aileronVal.bind(JoyStickCanvas.aileron);
@@ -194,15 +194,16 @@ public class View implements Initializable, Observer {
 			    @Override
 			    public void changed(ObservableValue<?> observable, Object oldValue,
 			            Object newValue) {
+			    	//System.out.println("x"+:+GridCanvas.pla);
 			       GridCanvas.redraw();
 			    }
 			});
 			
-			GridCanvas.setOnMouseClicked((e) -> {
+		/*	GridCanvas.setOnMouseClicked((e) -> {
 				GridCanvas.destinationXcord.set(e.getX());
 				GridCanvas.destinationYcord.set(e.getY());
 				GridCanvas.redraw();
-			});
+			});*/
 		}
 	}
 
