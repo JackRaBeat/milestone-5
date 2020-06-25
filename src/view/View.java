@@ -187,8 +187,7 @@ public class View implements Initializable, Observer {
 					vm.planeXCord)));
 			this.GridCanvas.planeYcord.bind((Bindings.createDoubleBinding(
 					() -> (((GridCanvas.initialY- vm.planeYCord.doubleValue()) * Math.sqrt(GridCanvas.area)) * GridCanvas.recSizeWidth()),
-					vm.planeYCord)));
-				
+					vm.planeYCord)));			
 
 			//whenever positions change, redraw the map.
 			GridCanvas.planeXcord.addListener(new ChangeListener<Object>() {
@@ -199,12 +198,7 @@ public class View implements Initializable, Observer {
 			       GridCanvas.redraw();
 			    }
 			});
-			
-			GridCanvas.setOnMouseClicked((e) -> {
-				GridCanvas.destinationXcord.set(e.getX());
-				GridCanvas.destinationYcord.set(e.getY());
-				GridCanvas.redraw();
-			});
+				
 		}
 	}
 
@@ -245,6 +239,14 @@ public class View implements Initializable, Observer {
 
 		result.ifPresent(serverInfo -> {
 			vm.connectToSolver(serverInfo.getKey(),Integer.parseInt(serverInfo.getValue()));
+		});
+		//definition of the solution event is relevant just here 
+		GridCanvas.setOnMouseClicked((e) -> {
+			GridCanvas.destinationXcord.set(e.getX());
+			GridCanvas.destinationYcord.set(e.getY());
+			GridCanvas.redraw();
+			vm.solveProblem(GridCanvas.mapData,GridCanvas.planeXcord.get(),GridCanvas.planeYcord.get(),GridCanvas.destinationXcord.get(),GridCanvas.destinationYcord.get(),GridCanvas.recSizeWidth(),GridCanvas.recSizeHeight());	
+			GridCanvas.drawSolutionPath();
 		});
 	}
 

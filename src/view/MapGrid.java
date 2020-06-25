@@ -22,7 +22,7 @@ public class MapGrid extends Canvas {
 	Image gridSnapshot;
 	public double initialX;
 	public double initialY;
-	public double destinationXcord, destinationYcord;
+	public  DoubleProperty destinationXcord, destinationYcord;
 	public DoubleProperty planeXcord, planeYcord;//changes according to the model side 
 	public DoubleProperty heading;
 	public StringProperty solution;
@@ -50,20 +50,8 @@ public class MapGrid extends Canvas {
 		this.mapData = mapData;
 		this.initialX=initialX;
 		this.initialY=initialY;
-/*
-		//making a solution to test the redraw() function
-		StringBuilder sb = new StringBuilder("");
-		for(int i = 0 ; i < 100; i++) {
-			if(i % 2 == 0) sb.append("right,");
-			else sb.append("down,");
-		}
-		for(int i = 0 ; i < 30; i++) {
-			if(i % 2 == 0) sb.append("right,");
-			else sb.append("up,");
-		}
+
 		
-		this.solution.set(sb.toString());
-	*/
 		this.destinationXcord.set(this.getWidth()/2 + this.getWidth()/5);
 		this.destinationYcord.set(this.getHeight()/2 + this.getHeight()/5);
 		this.area = area;
@@ -97,7 +85,7 @@ public class MapGrid extends Canvas {
 	}
 	
 	public void drawImage(GraphicsContext gc, Image im, double x, double y ,double w ,double h ,double d) {
-		//if(!serverUp.get()) return;
+		if(!serverUp.get()) return;
 		gc.save();
 		gc.translate(x, y);
 		gc.rotate(d);
@@ -135,42 +123,54 @@ public class MapGrid extends Canvas {
 			drawImage(gc,destinationImage ,destinationXcord.doubleValue(), destinationYcord.doubleValue(), this.recSizeWidth() * 10 , this.recSizeHeight() * 10, 0);
 
 			
-			/*String sol = solution.get();
-			if(sol!=null) {
-				int desXDataCord = (int) (planeXcord.get() / w);
-				int desYDataCord = (int) (planeYcord.get() / h);
-				String n[] = sol.split(",");
-				int numsToAvg = n.length / 15;
-				double avg = 0;
-				for(int i = 0; i < n.length ; i++)
-				{
-					switch(n[i]) {
-					  case "up":
-					    avg +=0;
-					    desYDataCord--;
-					    break;
-					  case "right":
-						  avg +=90;
-						  desXDataCord++;
-					    break;
-					  case "down":
-						  avg += 180;
-						  desYDataCord++;
-						    break;
-					  case "left":
-						  avg += 270;
-						  desXDataCord--;
-						break;
-					}
-					if(i % numsToAvg == numsToAvg - 1) {
-						drawImage(gc,arrowImage,w * desXDataCord, h * desYDataCord, w * 2, h * 2,(int) avg/numsToAvg);
-						avg = 0;
-					}
-				}
-				
-			}*/
+	
 			}
+			
 		}
+	
+	public void drawSolutionPath()
+	{
+		GraphicsContext gc = getGraphicsContext2D();
+		double w=this.recSizeWidth();
+		double h=this.recSizeHeight();
+		String sol = solution.get();
+		if(sol!=null) {
+			int desXDataCord = (int) (planeXcord.get() / w);
+			int desYDataCord = (int) (planeYcord.get() / h);
+			String n[] = sol.split(",");
+			int numsToAvg = n.length / 15;
+			double avg = 0;
+			for(int i = 0; i < n.length ; i++)
+			{
+				switch(n[i]) {
+				  case "up":
+				    avg +=0;
+				    desYDataCord--;
+				    break;
+				  case "right":
+					  avg +=90;
+					  desXDataCord++;
+				    break;
+				  case "down":
+					  avg += 180;
+					  desYDataCord++;
+					    break;
+				  case "left":
+					  avg += 270;
+					  desXDataCord--;
+					break;
+				}
+			
+				if(i % numsToAvg == numsToAvg - 1) {
+					drawImage(gc,arrowImage,w * desXDataCord, h * desYDataCord, w * 2, h * 2,(int) avg/numsToAvg);
+					avg = 0;
+				}
+			}
+			
+		}
+		
+	}
+	
 
 
 }

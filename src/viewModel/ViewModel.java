@@ -134,4 +134,9 @@ public class ViewModel extends Observable implements Observer {
 		}
 		model.connectToSolver(ip, port);
 	}
+	
+	public void solveProblem(int[][] mapGrid, double currentX, double currentY, double xDest, double yDest, double w,double h)
+	{
+		model.solveProblem(mapGrid,currentX,currentY,xDest, yDest,  w, h);	
+	}
 }

@@ -72,6 +72,7 @@ public class Model extends Observable {
 		setChanged();
 		notifyObservers(data);
 	}
+	
 	public void passSolution(String solution)
 	{
 		String data="gotSolution "+solution;
