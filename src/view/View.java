@@ -174,31 +174,47 @@ public class View implements Initializable, Observer {
 			for (int i = 2; i < row; i++) {
 				String[] data = list.get(i).split(",");
 				for (int j = 0; j < col; j++) {
-
+					if(Integer.parseInt(data[j]) == 0) {
+						mapData[i - 2][j] = 1;
+					}
 					mapData[i - 2][j] = Integer.parseInt(data[j]);
 				}
 			}
-			
               //this binding is relevant just after the map has loaded.  
 			GridCanvas.setMapData(mapData, area,initialX,initialY);
 			this.GridCanvas.planeXcord.bind((Bindings.createDoubleBinding(
-					() -> ((
-							(vm.planeXCord.doubleValue()-GridCanvas.initialX) * Math.sqrt(GridCanvas.area)) * GridCanvas.recSizeHeight()),
+					() -> (((vm.planeXCord.doubleValue() - GridCanvas.initialX) * Math.sqrt(GridCanvas.area)) * GridCanvas.recSizeWidth()),
 					vm.planeXCord)));
 			this.GridCanvas.planeYcord.bind((Bindings.createDoubleBinding(
-					() -> (((GridCanvas.initialY- vm.planeYCord.doubleValue()) * Math.sqrt(GridCanvas.area)) * GridCanvas.recSizeWidth()),
-					vm.planeYCord)));			
-
+					() -> (((GridCanvas.initialY - vm.planeYCord.doubleValue()) * Math.sqrt(GridCanvas.area)) * GridCanvas.recSizeHeight()),
+					vm.planeYCord)));
+			GridCanvas.setOnMouseClicked((e) -> {
+				GridCanvas.destinationXcord.set(e.getX());
+				GridCanvas.destinationYcord.set(e.getY());
+				GridCanvas.redraw();
+			});
 			//whenever positions change, redraw the map.
 			GridCanvas.planeXcord.addListener(new ChangeListener<Object>() {
 			    @Override
 			    public void changed(ObservableValue<?> observable, Object oldValue,
 			            Object newValue) {
-			    	//System.out.println("x"+:+GridCanvas.pla);
 			       GridCanvas.redraw();
 			    }
 			});
-				
+			GridCanvas.planeYcord.addListener(new ChangeListener<Object>() {
+			    @Override
+			    public void changed(ObservableValue<?> observable, Object oldValue,
+			            Object newValue) {
+			       GridCanvas.redraw();
+			    }
+			});
+			GridCanvas.heading.addListener(new ChangeListener<Object>() {
+			    @Override
+			    public void changed(ObservableValue<?> observable, Object oldValue,
+			            Object newValue) {
+			       GridCanvas.redraw();
+			    }
+			});
 		}
 	}
 
@@ -239,15 +255,12 @@ public class View implements Initializable, Observer {
 
 		result.ifPresent(serverInfo -> {
 			vm.connectToSolver(serverInfo.getKey(),Integer.parseInt(serverInfo.getValue()));
+			GridCanvas.setOnMouseClicked((e) -> {
+				vm.solveProblem(GridCanvas.mapData, GridCanvas.planeXcord.get(), GridCanvas.planeYcord.get(), GridCanvas.destinationXcord.get(), 
+						GridCanvas.destinationYcord.get(), GridCanvas.recSizeWidth(), GridCanvas.recSizeHeight());
+			});
 		});
 		//definition of the solution event is relevant just here 
-		GridCanvas.setOnMouseClicked((e) -> {
-			GridCanvas.destinationXcord.set(e.getX());
-			GridCanvas.destinationYcord.set(e.getY());
-			GridCanvas.redraw();
-			vm.solveProblem(GridCanvas.mapData,GridCanvas.planeXcord.get(),GridCanvas.planeYcord.get(),GridCanvas.destinationXcord.get(),GridCanvas.destinationYcord.get(),GridCanvas.recSizeWidth(),GridCanvas.recSizeHeight());	
-			GridCanvas.drawSolutionPath();
-		});
 	}
 
 	@FXML
@@ -258,7 +271,6 @@ public class View implements Initializable, Observer {
 //to run.
 		vm.printAreaText.set("");
 		vm.interpretText();
-
 	}
 	
 

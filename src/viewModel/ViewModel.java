@@ -27,7 +27,7 @@ public class ViewModel extends Observable implements Observer {
 		this.model = model;
 		commandLineText = new SimpleStringProperty();
 		printAreaText = new SimpleStringProperty();
-		solution=new SimpleStringProperty();
+		solution=new SimpleStringProperty("");
 		throttleVal = new SimpleDoubleProperty();
 		rudderVal = new SimpleDoubleProperty();
 		planeXCord = new SimpleDoubleProperty();
@@ -106,13 +106,12 @@ public class ViewModel extends Observable implements Observer {
     			   double x = model.getPlaneXCord();
     			   double y =  model.getPlaneYCord();
     			   double z = model.getHeading();
-
+    			   //System.out.println("BEFORE MANIPULATION : planeX: " + x + " planeY: " + y);
     			   planeYCord.set(y);
     			   heading.set(z);
-    			   System.out.println("BEFORE MANIPULATION : planeX: " + x + " planeY: " + y);
     			   planeXCord.set(x);
     			   try {
-					Thread.sleep(2000);
+					Thread.sleep(500);
 				} catch (InterruptedException e) {e.printStackTrace();}
     		   }
     		   }).start();
@@ -125,10 +124,11 @@ public class ViewModel extends Observable implements Observer {
 	}
 
 	public void connectToSolver(String ip, int port) {
-		File planeImageFile = new File("resources/solver.exe");
+		File planeImageFile = new File("resources/solverServer.exe");
 		Runtime runTime = Runtime.getRuntime();
+		System.out.println(planeImageFile.toURI().getPath());
 		try {
-			runTime.exec("java -classpath " + planeImageFile.toURI().getPath());
+			runTime.exec(planeImageFile.toURI().getPath());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

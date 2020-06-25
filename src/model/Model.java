@@ -110,7 +110,7 @@ breaks = 0
 throttle = 1
 var h0 = heading
 while alt < 500 {
-rudder = (h0 -heading)/50
+rudder = (h0 -heading)/80
 aileron = -roll / 70
 elevator = pitch / 50
 print alt

@@ -50,8 +50,6 @@ public class MapGrid extends Canvas {
 		this.mapData = mapData;
 		this.initialX=initialX;
 		this.initialY=initialY;
-
-		
 		this.destinationXcord.set(this.getWidth()/2 + this.getWidth()/5);
 		this.destinationYcord.set(this.getHeight()/2 + this.getHeight()/5);
 		this.area = area;
@@ -85,7 +83,7 @@ public class MapGrid extends Canvas {
 	}
 	
 	public void drawImage(GraphicsContext gc, Image im, double x, double y ,double w ,double h ,double d) {
-		if(!serverUp.get()) return;
+		//if(!serverUp.get()) return;
 		gc.save();
 		gc.translate(x, y);
 		gc.rotate(d);
@@ -103,10 +101,6 @@ public class MapGrid extends Canvas {
 				double scale = calcColorScale();
 				double w = this.recSizeWidth();
 				double h = this.recSizeHeight();
-	    
-				
-
-
 				//coloring the map-grid
 				for (int i = 0; i < mapData.length; i++) {
 					for (int j = 0; j < mapData[0].length; j++) {
@@ -118,14 +112,13 @@ public class MapGrid extends Canvas {
 				gridSnapshot = this.snapshot(null, null);
 			}
 			gc.drawImage(gridSnapshot, 0, 0);
-			System.out.println("AFTER MANIPULATION : planeX: " + planeXcord.get() + " planeY: " + planeYcord.get());
+			//System.out.println("AFTER MANIPULATION : planeX: " + planeXcord.get() + " planeY: " + planeYcord.get());
 			drawImage(gc,planeImage ,planeXcord.get(), planeYcord.get(),this.recSizeWidth() * 10 , this.recSizeHeight() * 10 ,heading.get());
 			drawImage(gc,destinationImage ,destinationXcord.doubleValue(), destinationYcord.doubleValue(), this.recSizeWidth() * 10 , this.recSizeHeight() * 10, 0);
-
-			
-	
 			}
-			
+			if(!solution.get().equals("")) {
+				drawSolutionPath();
+			}
 		}
 	
 	public void drawSolutionPath()
