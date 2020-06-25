@@ -19,6 +19,7 @@ public class MapGrid extends Canvas {
 	Image planeImage;
 	Image destinationImage;
 	Image arrowImage;
+	Image gridSnapshot;
 	public double initialX;
 	public double initialY;
 	public DoubleProperty destinationXcord, destinationYcord;
@@ -32,9 +33,9 @@ public class MapGrid extends Canvas {
 		this.planeXcord = new SimpleDoubleProperty();
 		this.planeYcord = new SimpleDoubleProperty();
 		this.heading=new SimpleDoubleProperty();		
-		//this.destinationXcord = new SimpleDoubleProperty();//TODO: make the conversion on the model side so we wont have to mess with it here. 
-		//this.destinationYcord = new SimpleDoubleProperty();
-		//this.solution = new SimpleStringProperty();
+		this.destinationXcord = new SimpleDoubleProperty();//TODO: make the conversion on the model side so we wont have to mess with it here. 
+		this.destinationYcord = new SimpleDoubleProperty();
+		this.solution = new SimpleStringProperty();
 		this.serverUp = new SimpleBooleanProperty();
 		
 	}
@@ -43,7 +44,8 @@ public class MapGrid extends Canvas {
 		this.destinationImage = destinationImage;
 		this.arrowImage = arrowImage;
 	}
-
+	public double recSizeHeight() {return this.getHeight()  / this.mapData.length;}
+	public double recSizeWidth() { return this.getWidth()  / this.mapData[0].length;}
 	public void setMapData(int[][] mapData, double area,double initialX,double initialY) {
 		this.mapData = mapData;
 		this.initialX=initialX;
@@ -61,9 +63,9 @@ public class MapGrid extends Canvas {
 		}
 		
 		this.solution.set(sb.toString());
-	
+	*/
 		this.destinationXcord.set(this.getWidth()/2 + this.getWidth()/5);
-		this.destinationYcord.set(this.getHeight()/2 + this.getHeight()/5);*/
+		this.destinationYcord.set(this.getHeight()/2 + this.getHeight()/5);
 		this.area = area;
 		redraw();
 	}
@@ -95,40 +97,42 @@ public class MapGrid extends Canvas {
 	}
 	
 	public void drawImage(GraphicsContext gc, Image im, double x, double y ,double w ,double h ,double d) {
-		/*if(!serverUp.get()) return;
+		//if(!serverUp.get()) return;
 		gc.save();
 		gc.translate(x, y);
 		gc.rotate(d);
 		gc.translate(-x, -y);
 		gc.drawImage(im, x - w/2, y - h/2, w, h);
-		gc.restore();*/
+		gc.restore();
 	}
 	 
 	public void redraw() {
 		if (mapData != null) {
-
-			double scale = calcColorScale();
-			double W = getWidth();
-			double H = getHeight();
-
-			double w = W / mapData[0].length;
-			double h = H / mapData.length;
-    
 			GraphicsContext gc = getGraphicsContext2D();
 			//clearing the whole canvas
 			gc.clearRect(0, 0, this.getWidth(), this.getHeight());
-			//coloring the map-grid
-			for (int i = 0; i < mapData.length; i++) {
-				for (int j = 0; j < mapData[0].length; j++) {
-					String color = calcCellColor(mapData[i][j], scale);
-					gc.setFill(Paint.valueOf(color));
-					gc.fillRect(j * w, i * h, w, h);
-				}			
-			}			
-			 
-			drawImage(gc,planeImage ,planeXcord.get(), planeYcord.get(), W / mapData[0].length * 10 , H  / mapData[0].length  * 10,heading.get());
-			//drawImage(gc,destinationImage ,destinationXcord.doubleValue(), destinationYcord.doubleValue(), W / mapData[0].length * 10 , H  / mapData[0].length  * 10, 0);
+				if(gridSnapshot == null) {
+				double scale = calcColorScale();
+				double w = this.recSizeWidth();
+				double h = this.recSizeHeight();
+	    
+				
 
+
+				//coloring the map-grid
+				for (int i = 0; i < mapData.length; i++) {
+					for (int j = 0; j < mapData[0].length; j++) {
+						String color = calcCellColor(mapData[i][j], scale);
+						gc.setFill(Paint.valueOf(color));
+						gc.fillRect(j * w, i * h, w, h);
+					}
+				}
+				gridSnapshot = this.snapshot(null, null);
+			}
+			gc.drawImage(gridSnapshot, 0, 0);
+			System.out.println("AFTER MANIPULATION : planeX: " + planeXcord.get() + " planeY: " + planeYcord.get());
+			drawImage(gc,planeImage ,planeXcord.get(), planeYcord.get(),this.recSizeWidth() * 10 , this.recSizeHeight() * 10 ,heading.get());
+			drawImage(gc,destinationImage ,destinationXcord.doubleValue(), destinationYcord.doubleValue(), this.recSizeWidth() * 10 , this.recSizeHeight() * 10, 0);
 
 			
 			/*String sol = solution.get();

@@ -103,9 +103,14 @@ public class ViewModel extends Observable implements Observer {
     	   System.out.println("hey im here!!!");
     	  new Thread(()->{
     		   while(dataServAvailable) {
-    			   planeXCord.set(model.getPlaneXCord());
-    			   planeYCord.set(model.getPlaneYCord());
-    			   heading.set(model.getHeading());
+    			   double x = model.getPlaneXCord();
+    			   double y =  model.getPlaneYCord();
+    			   double z = model.getHeading();
+
+    			   planeYCord.set(y);
+    			   heading.set(z);
+    			   System.out.println("BEFORE MANIPULATION : planeX: " + x + " planeY: " + y);
+    			   planeXCord.set(x);
     			   try {
 					Thread.sleep(2000);
 				} catch (InterruptedException e) {e.printStackTrace();}

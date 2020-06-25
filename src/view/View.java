@@ -182,10 +182,10 @@ public class View implements Initializable, Observer {
 			GridCanvas.setMapData(mapData, area,initialX,initialY);
 			this.GridCanvas.planeXcord.bind((Bindings.createDoubleBinding(
 					() -> ((
-							(vm.planeXCord.doubleValue()-GridCanvas.initialX) / Math.sqrt(GridCanvas.area)) * GridCanvas.getWidth()),
+							(vm.planeXCord.doubleValue()-GridCanvas.initialX) * Math.sqrt(GridCanvas.area)) * GridCanvas.recSizeHeight()),
 					vm.planeXCord)));
 			this.GridCanvas.planeYcord.bind((Bindings.createDoubleBinding(
-					() -> (((vm.planeYCord.doubleValue()-GridCanvas.initialY) / Math.sqrt(GridCanvas.area)) * GridCanvas.getHeight()),
+					() -> (((GridCanvas.initialY- vm.planeYCord.doubleValue()) * Math.sqrt(GridCanvas.area)) * GridCanvas.recSizeWidth()),
 					vm.planeYCord)));
 			
 
@@ -199,11 +199,11 @@ public class View implements Initializable, Observer {
 			    }
 			});
 			
-		/*	GridCanvas.setOnMouseClicked((e) -> {
+			GridCanvas.setOnMouseClicked((e) -> {
 				GridCanvas.destinationXcord.set(e.getX());
 				GridCanvas.destinationYcord.set(e.getY());
 				GridCanvas.redraw();
-			});*/
+			});
 		}
 	}
 
