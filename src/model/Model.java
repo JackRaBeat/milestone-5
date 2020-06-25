@@ -89,7 +89,7 @@ public class Model extends Observable {
 	}
 	public double getPlaneYCord()
 	{
-		return fliGearServerHandler.ds.get("position/logtitude-deg");
+		return fliGearServerHandler.ds.get("position/longitude-deg");
 	}
 	
 //SCRIPT:
