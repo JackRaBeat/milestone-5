@@ -62,9 +62,19 @@ public class Model extends Observable {
 	public void connectToSolver(String ip, int port) {
 		solvServerHandler.connect(ip,port);	
 	}
+	public void solveProblem(int[][] mapGrid, double currentX, double currentY, double xDest, double yDest, double w,double h)
+	{
+		solvServerHandler.solveProblem(mapGrid,currentX,currentY,xDest, yDest,  w, h);	
+	}
 
 	public void notifyDataServerAvailable() {
 		String data="DataServerAvailable";
+		setChanged();
+		notifyObservers(data);
+	}
+	public void passSolution(String solution)
+	{
+		String data="gotSolution "+solution;
 		setChanged();
 		notifyObservers(data);
 	}

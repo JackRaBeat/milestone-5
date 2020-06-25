@@ -21,7 +21,7 @@ public class MapGrid extends Canvas {
 	Image arrowImage;
 	public double initialX;
 	public double initialY;
-	public DoubleProperty destinationXcord, destinationYcord;
+	public double destinationXcord, destinationYcord;
 	public DoubleProperty planeXcord, planeYcord;//changes according to the model side 
 	public DoubleProperty heading;
 	public StringProperty solution;
@@ -32,9 +32,9 @@ public class MapGrid extends Canvas {
 		this.planeXcord = new SimpleDoubleProperty();
 		this.planeYcord = new SimpleDoubleProperty();
 		this.heading=new SimpleDoubleProperty();		
-		//this.destinationXcord = new SimpleDoubleProperty();//TODO: make the conversion on the model side so we wont have to mess with it here. 
-		//this.destinationYcord = new SimpleDoubleProperty();
-		//this.solution = new SimpleStringProperty();
+		this.destinationXcord = new SimpleDoubleProperty();//TODO: make the conversion on the model side so we wont have to mess with it here. 
+		this.destinationYcord = new SimpleDoubleProperty();
+		this.solution = new SimpleStringProperty();
 		this.serverUp = new SimpleBooleanProperty();
 		
 	}
@@ -48,22 +48,6 @@ public class MapGrid extends Canvas {
 		this.mapData = mapData;
 		this.initialX=initialX;
 		this.initialY=initialY;
-/*
-		//making a solution to test the redraw() function
-		StringBuilder sb = new StringBuilder("");
-		for(int i = 0 ; i < 100; i++) {
-			if(i % 2 == 0) sb.append("right,");
-			else sb.append("down,");
-		}
-		for(int i = 0 ; i < 30; i++) {
-			if(i % 2 == 0) sb.append("right,");
-			else sb.append("up,");
-		}
-		
-		this.solution.set(sb.toString());
-	
-		this.destinationXcord.set(this.getWidth()/2 + this.getWidth()/5);
-		this.destinationYcord.set(this.getHeight()/2 + this.getHeight()/5);*/
 		this.area = area;
 		redraw();
 	}
@@ -95,13 +79,13 @@ public class MapGrid extends Canvas {
 	}
 	
 	public void drawImage(GraphicsContext gc, Image im, double x, double y ,double w ,double h ,double d) {
-		/*if(!serverUp.get()) return;
+		if(!serverUp.get()) return;
 		gc.save();
 		gc.translate(x, y);
 		gc.rotate(d);
 		gc.translate(-x, -y);
 		gc.drawImage(im, x - w/2, y - h/2, w, h);
-		gc.restore();*/
+		gc.restore();
 	}
 	 
 	public void redraw() {

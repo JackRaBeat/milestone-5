@@ -13,11 +13,10 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.image.Image;
 import model.Model;
 
 public class ViewModel extends Observable implements Observer {
-	public StringProperty commandLineText, printAreaText; // these are observable values
+	public StringProperty commandLineText, printAreaText,solution; // these are observable values
 	public DoubleProperty throttleVal, rudderVal, planeXCord, planeYCord, aileronVal, elevatorVal;
 	public DoubleProperty heading;
 	volatile boolean dataServAvailable;
@@ -28,6 +27,7 @@ public class ViewModel extends Observable implements Observer {
 		this.model = model;
 		commandLineText = new SimpleStringProperty();
 		printAreaText = new SimpleStringProperty();
+		solution=new SimpleStringProperty();
 		throttleVal = new SimpleDoubleProperty();
 		rudderVal = new SimpleDoubleProperty();
 		planeXCord = new SimpleDoubleProperty();
@@ -111,6 +111,11 @@ public class ViewModel extends Observable implements Observer {
 				} catch (InterruptedException e) {e.printStackTrace();}
     		   }
     		   }).start();
+    	  break;
+       case("gotSolution"):
+    	   this.solution.set(value);  
+    	   break;
+    	  
        }
 	}
 

@@ -70,6 +70,7 @@ public class View implements Initializable, Observer {
 		
 		this.vm.aileronVal.bind(JoyStickCanvas.aileron);
 		this.vm.elevatorVal.bind(JoyStickCanvas.elevator);
+		this.GridCanvas.solution.bind(vm.solution);
 		
 		this.GridCanvas.heading.bind(this.vm.heading);
 		this.GridCanvas.serverUp.bind(this.vm.serverUp);
@@ -187,7 +188,7 @@ public class View implements Initializable, Observer {
 			this.GridCanvas.planeYcord.bind((Bindings.createDoubleBinding(
 					() -> (((vm.planeYCord.doubleValue()-GridCanvas.initialY) / Math.sqrt(GridCanvas.area)) * GridCanvas.getHeight()),
 					vm.planeYCord)));
-			
+				
 
 			//whenever positions change, redraw the map.
 			GridCanvas.planeXcord.addListener(new ChangeListener<Object>() {
@@ -199,11 +200,11 @@ public class View implements Initializable, Observer {
 			    }
 			});
 			
-		/*	GridCanvas.setOnMouseClicked((e) -> {
+			GridCanvas.setOnMouseClicked((e) -> {
 				GridCanvas.destinationXcord.set(e.getX());
 				GridCanvas.destinationYcord.set(e.getY());
 				GridCanvas.redraw();
-			});*/
+			});
 		}
 	}
 
