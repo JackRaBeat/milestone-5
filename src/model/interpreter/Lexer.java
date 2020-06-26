@@ -118,3 +118,10 @@ public class Lexer {
 	}
 
 }
+
+/*var x=5
+while x < 456 {
+print x 
+x=x+1
+}*/
+

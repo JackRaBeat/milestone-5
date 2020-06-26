@@ -168,16 +168,16 @@ public class View implements Initializable, Observer {
 			double area = Double.parseDouble(list.get(1).split(",")[0]);
 			
 			// Scanning the heights matrix. Each cell is measured by meters.
-			int row = list.size();
+			int row = list.size()-2;
 			int col = list.get(2).split(",").length;
 			int[][] mapData = new int[row][col];
-			for (int i = 2; i < row; i++) {
+			for (int i = 2; i < row+2; i++) {
 				String[] data = list.get(i).split(",");
 				for (int j = 0; j < col; j++) {
-					if(Integer.parseInt(data[j]) == 0) {
+					mapData[i - 2][j] = Integer.parseInt(data[j]);
+					if(data[j].equals("0")) {
 						mapData[i - 2][j] = 1;
 					}
-					mapData[i - 2][j] = Integer.parseInt(data[j]);
 				}
 			}
               //this binding is relevant just after the map has loaded.  
@@ -188,11 +188,13 @@ public class View implements Initializable, Observer {
 			this.GridCanvas.planeYcord.bind((Bindings.createDoubleBinding(
 					() -> (((GridCanvas.initialY - vm.planeYCord.doubleValue()) * Math.sqrt(GridCanvas.area)) * GridCanvas.recSizeHeight()),
 					vm.planeYCord)));
+			
 			GridCanvas.setOnMouseClicked((e) -> {
 				GridCanvas.destinationXcord.set(e.getX());
 				GridCanvas.destinationYcord.set(e.getY());
 				GridCanvas.redraw();
 			});
+			
 			//whenever positions change, redraw the map.
 			GridCanvas.planeXcord.addListener(new ChangeListener<Object>() {
 			    @Override
@@ -220,47 +222,53 @@ public class View implements Initializable, Observer {
 
 	@FXML
 	public void calculatePathPressed() {
+		if (!vm.isConnectedToSolver())
+		{		
+			Dialog<Pair<String, String>> dialog = new Dialog<>();
+			dialog.setTitle("Solver Server connection");
+			dialog.setHeaderText("Please insert the ip and port of Solver server");
 
-		Dialog<Pair<String, String>> dialog = new Dialog<>();
-		dialog.setTitle("Solver Server connection");
-		dialog.setHeaderText("Please insert the ip and port of Solver server");
+			ButtonType loginButtonType = new ButtonType("Connect and solve", ButtonData.OK_DONE);
+			dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
 
-		ButtonType loginButtonType = new ButtonType("Connect and solve", ButtonData.OK_DONE);
-		dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+			GridPane grid = new GridPane();
+			grid.setHgap(10);
+			grid.setVgap(10);
 
-		GridPane grid = new GridPane();
-		grid.setHgap(10);
-		grid.setVgap(10);
+			TextField ip = new TextField();
+			ip.setPromptText("IP");
+			TextField port = new TextField();
+			port.setPromptText("port");
 
-		TextField ip = new TextField();
-		ip.setPromptText("IP");
-		TextField port = new TextField();
-		port.setPromptText("port");
+			grid.add(new Label("IP:"), 0, 0);
+			grid.add(ip, 1, 0);
+			grid.add(new Label("Port:"), 0, 1);
+			grid.add(port, 1, 1);
 
-		grid.add(new Label("IP:"), 0, 0);
-		grid.add(ip, 1, 0);
-		grid.add(new Label("Port:"), 0, 1);
-		grid.add(port, 1, 1);
+			dialog.getDialogPane().setContent(grid);
+			Platform.runLater(() -> ip.requestFocus());
 
-		dialog.getDialogPane().setContent(grid);
-		Platform.runLater(() -> ip.requestFocus());
-
-		dialog.setResultConverter(dialogButton -> {
-			if (dialogButton == loginButtonType) {
-				return new Pair<>(ip.getText(), port.getText());
-			}
-			return null;
-		});
-		Optional<Pair<String, String>> result = dialog.showAndWait();
-
-		result.ifPresent(serverInfo -> {
-			vm.connectToSolver(serverInfo.getKey(),Integer.parseInt(serverInfo.getValue()));
-			GridCanvas.setOnMouseClicked((e) -> {
-				vm.solveProblem(GridCanvas.mapData, GridCanvas.planeXcord.get(), GridCanvas.planeYcord.get(), GridCanvas.destinationXcord.get(), 
-						GridCanvas.destinationYcord.get(), GridCanvas.recSizeWidth(), GridCanvas.recSizeHeight());
+			dialog.setResultConverter(dialogButton -> {
+				if (dialogButton == loginButtonType) {
+					return new Pair<>(ip.getText(), port.getText());
+				}
+				return null;
 			});
-		});
-		//definition of the solution event is relevant just here 
+			Optional<Pair<String, String>> result = dialog.showAndWait();
+
+			result.ifPresent(serverInfo -> {
+				vm.connectToSolver(serverInfo.getKey(),Integer.parseInt(serverInfo.getValue()));
+				});	
+			
+					
+			
+		}
+				
+	//if already connected.		
+			vm.solveProblem(GridCanvas.mapData, GridCanvas.planeXcord.get(), GridCanvas.planeYcord.get(), GridCanvas.destinationXcord.get(), 
+					GridCanvas.destinationYcord.get(), GridCanvas.recSizeWidth(), GridCanvas.recSizeHeight());
+			this.GridCanvas.redraw();
+		
 	}
 
 	@FXML

@@ -19,6 +19,7 @@ public class Model extends Observable {
 	private Model() {
 		this.interpreter = new MyInterpreter();
 		this.fliGearServerHandler = new FlightGearServerHandler();
+		this.solvServerHandler=new SolverServerHandler();
 	}
 
 	public static Model getInstance() {
@@ -60,8 +61,15 @@ public class Model extends Observable {
 	}
 
 	public void connectToSolver(String ip, int port) {
+		System.out.println("ip: "+ip+" port: "+port);
 		solvServerHandler.connect(ip,port);	
 	}
+	
+	public boolean isConnectedToSolver()
+	{
+		return  (SolverServerHandler.connection!=null);
+	}
+	
 	public void solveProblem(int[][] mapGrid, double currentX, double currentY, double xDest, double yDest, double w,double h)
 	{
 		solvServerHandler.solveProblem(mapGrid,currentX,currentY,xDest, yDest,  w, h);	

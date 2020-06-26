@@ -50,8 +50,8 @@ public class MapGrid extends Canvas {
 		this.mapData = mapData;
 		this.initialX=initialX;
 		this.initialY=initialY;
-		this.destinationXcord.set(this.getWidth()/2 + this.getWidth()/5);
-		this.destinationYcord.set(this.getHeight()/2 + this.getHeight()/5);
+		//this.destinationXcord.set(this.getWidth()/2 + this.getWidth()/5);
+		//this.destinationYcord.set(this.getHeight()/2 + this.getHeight()/5);
 		this.area = area;
 		redraw();
 	}

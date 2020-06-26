@@ -29,7 +29,7 @@ fx:controller="view.View">
                            </HBox.margin>
                         </Button>
                         <Button fx:id="LoadDataButton" mnemonicParsing="false" onAction="#LoadDataPressed" text="Load data" />
-                        <Button fx:id="CalculatePathButton" mnemonicParsing="false" onAction="#calculatePathPressed" text="Calculate path" HBox.hgrow="NEVER" />
+                        <Button fx:id="CalculatePathButton" mnemonicParsing="false" onAction="#calculatePathPressed" text="Calculate path" HBox.hgrow="NEVER"/>
                      </children>
                      <opaqueInsets>
                         <Insets />

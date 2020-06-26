@@ -26,6 +26,12 @@ public class SolverServerHandler {
 		String map[] = formatMap(mapGrid);
 		String currentPos = formatLocation(currentX, currentY, w, h);
 		String destPos = formatLocation(xDest, yDest, w, h);
+		
+		for(String line:map) System.out.println(line);
+		System.out.println("CURRENT: "+currentPos);
+		System.out.println("DEST: "+destPos);
+		
+		
 		try {
 			OutputStream out = connection.getOutputStream();
 			PrintWriter UserOutput = new PrintWriter(out, true);
@@ -35,7 +41,8 @@ public class SolverServerHandler {
 			UserOutput.println("end");
 			UserOutput.println(currentPos);
 			UserOutput.println(destPos);
-			m.passSolution(in.readLine());
+			String line=in.readLine();
+			m.passSolution(line);
 		
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -45,8 +52,10 @@ public class SolverServerHandler {
 	private String[] formatMap(int[][] mapGrid) {
 		int j;
 		String map[] = new String[mapGrid.length];
+		
 		for (int i = 0; i < mapGrid.length; i++) {
-			for (j = 0; j < mapGrid[0].length - 1; j++) {
+			map[i]="";
+			for (j = 0; j < mapGrid[0].length - 1; j++) {			
 				map[i] += Integer.toString(mapGrid[i][j]) + ",";
 			}
 			map[i] += Integer.toString(mapGrid[i][j]);

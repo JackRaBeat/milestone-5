@@ -124,15 +124,12 @@ public class ViewModel extends Observable implements Observer {
 	}
 
 	public void connectToSolver(String ip, int port) {
-		File planeImageFile = new File("resources/solverServer.exe");
-		Runtime runTime = Runtime.getRuntime();
-		System.out.println(planeImageFile.toURI().getPath());
-		try {
-			runTime.exec(planeImageFile.toURI().getPath());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		model.connectToSolver(ip, port);
+	}
+	
+	public boolean isConnectedToSolver()
+	{
+		return (model.isConnectedToSolver());
 	}
 	
 	public void solveProblem(int[][] mapGrid, double currentX, double currentY, double xDest, double yDest, double w,double h)
