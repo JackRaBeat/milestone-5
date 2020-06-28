@@ -96,11 +96,12 @@ public class MapGrid extends Canvas {
 		if (mapData != null) {
 			GraphicsContext gc = getGraphicsContext2D();
 			//clearing the whole canvas
+			double w = this.recSizeWidth();
+			double h = this.recSizeHeight();
 			gc.clearRect(0, 0, this.getWidth(), this.getHeight());
 				if(gridSnapshot == null) {
 				double scale = calcColorScale();
-				double w = this.recSizeWidth();
-				double h = this.recSizeHeight();
+
 				//coloring the map-grid
 				for (int i = 0; i < mapData.length; i++) {
 					for (int j = 0; j < mapData[0].length; j++) {
@@ -113,11 +114,10 @@ public class MapGrid extends Canvas {
 			}
 			gc.drawImage(gridSnapshot, 0, 0);
 			//System.out.println("AFTER MANIPULATION : planeX: " + planeXcord.get() + " planeY: " + planeYcord.get());
-			drawImage(gc,planeImage ,planeXcord.get(), planeYcord.get(),this.recSizeWidth() * 10 , this.recSizeHeight() * 10 ,heading.get());
-			drawImage(gc,destinationImage ,destinationXcord.doubleValue(), destinationYcord.doubleValue(), this.recSizeWidth() * 10 , this.recSizeHeight() * 10, 0);
-			}
-			if(!solution.get().equals("")) {
-				drawSolutionPath();
+			int imgSize = 5;
+			drawImage(gc,planeImage ,planeXcord.get(), planeYcord.get(),this.recSizeWidth() * imgSize , this.recSizeHeight() * imgSize ,heading.get());
+			drawImage(gc,destinationImage ,destinationXcord.doubleValue(), destinationYcord.doubleValue(), this.recSizeWidth() * imgSize , this.recSizeHeight() * imgSize, 0);
+			drawSolutionPath();
 			}
 		}
 	
@@ -127,28 +127,29 @@ public class MapGrid extends Canvas {
 		double w=this.recSizeWidth();
 		double h=this.recSizeHeight();
 		String sol = solution.get();
-		if(sol!=null) {
+		if(sol!=null && sol != "") {
 			int desXDataCord = (int) (planeXcord.get() / w);
 			int desYDataCord = (int) (planeYcord.get() / h);
 			String n[] = sol.split(",");
-			int numsToAvg = n.length / 15;
+			int numsToAvg = 5;
 			double avg = 0;
+			
 			for(int i = 0; i < n.length ; i++)
 			{
 				switch(n[i]) {
-				  case "up":
+				  case "Up":
 				    avg +=0;
 				    desYDataCord--;
 				    break;
-				  case "right":
+				  case "Right":
 					  avg +=90;
 					  desXDataCord++;
 				    break;
-				  case "down":
+				  case "Down":
 					  avg += 180;
 					  desYDataCord++;
 					    break;
-				  case "left":
+				  case "Left":
 					  avg += 270;
 					  desXDataCord--;
 					break;
@@ -159,7 +160,7 @@ public class MapGrid extends Canvas {
 					avg = 0;
 				}
 			}
-			
+				
 		}
 		
 	}

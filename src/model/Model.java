@@ -72,7 +72,9 @@ public class Model extends Observable {
 	
 	public void solveProblem(int[][] mapGrid, double currentX, double currentY, double xDest, double yDest, double w,double h)
 	{
-		solvServerHandler.solveProblem(mapGrid,currentX,currentY,xDest, yDest,  w, h);	
+		String sol = solvServerHandler.solveProblem(mapGrid,currentX,currentY,xDest, yDest,  w, h);
+		if(sol == "") {System.out.println("ERROR ON READING LINE");}
+		passSolution(sol);
 	}
 
 	public void notifyDataServerAvailable() {

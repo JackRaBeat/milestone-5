@@ -140,6 +140,20 @@ public class View implements Initializable, Observer {
 		});
 	}
 
+	public int[][] rescalemapData(int[][] mapData,int scaleDiv){
+		int[][] scaledmapData = new int[mapData.length/scaleDiv][mapData[0].length/scaleDiv];
+		for(int i = 0; i < mapData.length; i+= scaleDiv) {
+			for(int j = 0; j < mapData[0].length ; j+= scaleDiv) {
+				for(int k = 0; k < scaleDiv; k++) {
+					for(int l = 0; l < scaleDiv; l++) {
+						scaledmapData[i/scaleDiv][j/scaleDiv] += mapData[i+k][j+l];
+					}
+				}
+				scaledmapData[i/scaleDiv][j/scaleDiv] /= (scaleDiv*scaleDiv);
+			}
+		}
+		return scaledmapData;
+	}
 	@FXML
 	public void LoadDataPressed() {
 
@@ -170,13 +184,14 @@ public class View implements Initializable, Observer {
 			// Scanning the heights matrix. Each cell is measured by meters.
 			int row = list.size()-2;
 			int col = list.get(2).split(",").length;
+			System.out.println("rows: " + row + " cols: " + col);
 			int[][] mapData = new int[row][col];
 			for (int i = 2; i < row+2; i++) {
 				String[] data = list.get(i).split(",");
 				for (int j = 0; j < col; j++) {
 					mapData[i - 2][j] = Integer.parseInt(data[j]);
-					if(data[j].equals("0")) {
-						mapData[i - 2][j] = 1;
+					if(mapData[i - 2][j] < 20) {
+						mapData[i - 2][j] = 20;
 					}
 				}
 			}
@@ -259,24 +274,20 @@ public class View implements Initializable, Observer {
 			result.ifPresent(serverInfo -> {
 				vm.connectToSolver(serverInfo.getKey(),Integer.parseInt(serverInfo.getValue()));
 				});	
-			
-					
-			
 		}
 				
-	//if already connected.		
-			vm.solveProblem(GridCanvas.mapData, GridCanvas.planeXcord.get(), GridCanvas.planeYcord.get(), GridCanvas.destinationXcord.get(), 
-					GridCanvas.destinationYcord.get(), GridCanvas.recSizeWidth(), GridCanvas.recSizeHeight());
-			this.GridCanvas.redraw();
-		
+		//if already connected.		
+		vm.solveProblem(GridCanvas.mapData, GridCanvas.planeXcord.get(), GridCanvas.planeYcord.get(), GridCanvas.destinationXcord.get(), 
+				GridCanvas.destinationYcord.get(), GridCanvas.recSizeWidth(), GridCanvas.recSizeHeight());
+		this.GridCanvas.redraw();
 	}
 
 	@FXML
 	public void ExecutePressed() {
 		if (!AutoPilotButton.isSelected()) return;
 		if (vm.interpreterBusy()) vm.stop();
-//takes down the current thread and allows another new context of interpretation 
-//to run.
+	//takes down the current thread and allows another new context of interpretation 
+	//to run.
 		vm.printAreaText.set("");
 		vm.interpretText();
 	}

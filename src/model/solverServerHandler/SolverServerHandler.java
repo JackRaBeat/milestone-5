@@ -21,17 +21,17 @@ public class SolverServerHandler {
 		}
 	}
 
-	public void solveProblem(int[][] mapGrid, double currentX, double currentY, double xDest, double yDest, double w,
+	public String solveProblem(int[][] mapGrid, double currentX, double currentY, double xDest, double yDest, double w,
 			double h) {
 		String map[] = formatMap(mapGrid);
 		String currentPos = formatLocation(currentX, currentY, w, h);
 		String destPos = formatLocation(xDest, yDest, w, h);
-		
+		/*
 		for(String line:map) System.out.println(line);
+		*/
 		System.out.println("CURRENT: "+currentPos);
 		System.out.println("DEST: "+destPos);
-		
-		
+		String sol = "";
 		try {
 			OutputStream out = connection.getOutputStream();
 			PrintWriter UserOutput = new PrintWriter(out, true);
@@ -41,12 +41,13 @@ public class SolverServerHandler {
 			UserOutput.println("end");
 			UserOutput.println(currentPos);
 			UserOutput.println(destPos);
-			String line=in.readLine();
-			m.passSolution(line);
-		
+			sol = in.readLine();
+			//System.out.println(sol);
+			return sol;
 		} catch (IOException e) {
 			e.printStackTrace();
-		}    
+		}
+		return sol;
 	}
 
 	private String[] formatMap(int[][] mapGrid) {
