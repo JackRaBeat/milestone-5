@@ -52,8 +52,8 @@ public class MapGrid extends Canvas {
 		return -((110.54*(planeXcord.get() -initialX) / Math.sqrt(area))* recSizeWidth());
 	}
 	
-	public double ConvertToY(double longtitude)
-	{	
+	public double ConvertToY(double longtitude,double latitude)
+	{
 		return ((111.320 * Math.cos(Math.toRadians(planeYcord.get())))/Math.sqrt(area) * recSizeHeight()-
 				(111.320 * Math.cos(Math.toRadians(initialY)))/Math.sqrt(area) * recSizeHeight());
 	}
@@ -104,11 +104,11 @@ public class MapGrid extends Canvas {
 		//if(!serverUp.get()) return;
 		gc.save();
 		gc.translate(x, y);
-		double degrees=d-this.old_rotation;
+		double degrees=this.old_rotation-d;
 		int mod=(int)(degrees)%360;
 		double to_rotate;
-		if(mod>0) to_rotate=degrees/(mod*360)+180;
-		else to_rotate=degrees+180;		
+		if(mod>0) to_rotate=degrees/(mod*360)+270;
+		else to_rotate=degrees+270;		
 		gc.rotate(to_rotate);
 		
 		gc.translate(-x, -y);
@@ -141,8 +141,9 @@ public class MapGrid extends Canvas {
 			
 			int imgSize = 5;
 			double x=ConvertToX(planeXcord.get());
-			double y=ConvertToY(planeYcord.get());
+			double y=ConvertToY(planeYcord.get(),x);
 			double direction=heading.get();
+			System.out.println("COORDS ARE: X: "+x+" Y: "+y);
 			System.out.println("HEADING IS: "+direction);
 
 			drawImage(gc,planeImage ,x,y,this.recSizeWidth() * imgSize , this.recSizeHeight() * imgSize ,direction-90);
