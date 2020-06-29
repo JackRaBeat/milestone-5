@@ -106,7 +106,6 @@ public class ViewModel extends Observable implements Observer {
     			   double x = model.getPlaneXCord();
     			   double y =  model.getPlaneYCord();
     			   double z = model.getHeading();
-    			   //System.out.println("BEFORE MANIPULATION : planeX: " + x + " planeY: " + y);
     			   planeYCord.set(y);
     			   heading.set(z);
     			   planeXCord.set(x);
