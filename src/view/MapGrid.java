@@ -26,7 +26,6 @@ public class MapGrid extends Canvas {
 	public  DoubleProperty destinationXcord, destinationYcord;
 	public DoubleProperty planeXcord, planeYcord;//changes according to the model side 
 	public DoubleProperty heading;
-	public double old_rotation;
 	public StringProperty solution;
 	public BooleanProperty serverUp;
 
@@ -115,10 +114,10 @@ public class MapGrid extends Canvas {
 				gridSnapshot = this.snapshot(null, null);
 			}
 			gc.drawImage(gridSnapshot, 0, 0);
-			int imgSize = 5;;
+			int imgSize = 5;
+			drawSolutionPath();
 			drawImage(gc,planeImage ,planeXcord.get(),planeYcord.get(),this.recSizeWidth() * imgSize , this.recSizeHeight() * imgSize ,heading.get());
 			drawImage(gc,destinationImage ,destinationXcord.doubleValue(), destinationYcord.doubleValue(), this.recSizeWidth() * imgSize , this.recSizeHeight() * imgSize, 0);
-			drawSolutionPath();
 			}
 		}
 	
@@ -156,11 +155,12 @@ public class MapGrid extends Canvas {
 					break;
 				
 				}
+				/*
 				if(desXDataCord < 0 || desYDataCord < 0 || desXDataCord > mapData[0].length || desYDataCord > mapData.length) {
 					System.out.println("EXCEPTION ON PATH CALCULATION-> desXDataCord:" + desXDataCord  + " desYDataCord:" +desYDataCord);
 					//this.solution = "";
 					return;
-				}
+				}*/
 				if(i % numsToAvg == numsToAvg - 1) {
 					drawImage(gc,arrowImage,w * desXDataCord, h * desYDataCord, w * 2, h * 2,(int) avg/numsToAvg);
 					avg = 0;

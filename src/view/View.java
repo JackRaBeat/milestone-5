@@ -196,8 +196,8 @@ public class View implements Initializable, Observer {
 				String[] data = list.get(i).split(",");
 				for (int j = 0; j < col; j++) {
 					mapData[i - 2][j] = Integer.parseInt(data[j]);
-					if (mapData[i - 2][j] < 50) {
-						mapData[i - 2][j] = 50;
+					if (mapData[i - 2][j] < 1) {
+						mapData[i - 2][j] = 1;
 					}
 				}
 			}
@@ -211,8 +211,8 @@ public class View implements Initializable, Observer {
 					
 					(111.320 *(vm.planeLongCord.get() -initialLong) * Math.cos(Math.toRadians(GridCanvas.initialLat  - vm.planeLatCord.get()))) / Math.sqrt(GridCanvas.area)
 					* GridCanvas.recSizeWidth()),vm.planeLongCord));
-			vm.planeLatCord.set(21.417460);
-			vm.planeLongCord.set(-157.918705);
+			//vm.planeLatCord.set(21.417460);
+			//vm.planeLongCord.set(-157.918705);
 			GridCanvas.setOnMouseClicked((e) -> {
 				GridCanvas.destinationXcord.set(e.getX());
 				GridCanvas.destinationYcord.set(e.getY());
