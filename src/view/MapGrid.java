@@ -52,10 +52,10 @@ public class MapGrid extends Canvas {
 		return -((110.54*(planeXcord.get() -initialX) / Math.sqrt(area))* recSizeWidth());
 	}
 	
-	public double ConvertToY(double longtitude,double latitude)
+	public double ConvertToY(double longtitude)
 	{
-		return ((111.320 * Math.cos(Math.toRadians(planeYcord.get())))/Math.sqrt(area) * recSizeHeight()-
-				(111.320 * Math.cos(Math.toRadians(initialY)))/Math.sqrt(area) * recSizeHeight());
+		return ((planeYcord.get()*111.320 * Math.cos(Math.toRadians(planeXcord.get())))/Math.sqrt(area) * recSizeHeight()-
+				(planeYcord.get()*111.320 * Math.cos(Math.toRadians(initialX)))/Math.sqrt(area) * recSizeHeight());
 	}
 	
 	
@@ -141,7 +141,7 @@ public class MapGrid extends Canvas {
 			
 			int imgSize = 5;
 			double x=ConvertToX(planeXcord.get());
-			double y=ConvertToY(planeYcord.get(),x);
+			double y=ConvertToY(planeYcord.get());
 			double direction=heading.get();
 			System.out.println("COORDS ARE: X: "+x+" Y: "+y);
 			System.out.println("HEADING IS: "+direction);
