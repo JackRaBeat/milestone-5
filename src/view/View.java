@@ -203,11 +203,18 @@ public class View implements Initializable, Observer {
 			}
 			// this binding is relevant just after the map has loaded.
 			GridCanvas.setMapData(mapData, area, initialX, initialY);
-			
-					
-			this.GridCanvas.planeXcord.bind(vm.planeXCord);
-			this.GridCanvas.planeYcord.bind(vm.planeYCord);
-			
+
+			this.GridCanvas.planeYcord.bind(Bindings.createDoubleBinding(
+					() -> ((110.54 * ( vm.planeXCord.get() - GridCanvas.initialX) / Math.sqrt(GridCanvas.area))
+							* GridCanvas.recSizeWidth()),
+					vm.planeXCord));
+			this.GridCanvas.planeXcord.bind(Bindings.createDoubleBinding(() -> ((GridCanvas.planeYcord.get() * 111.320
+					* Math.cos(Math.toRadians(GridCanvas.initialX))) / Math.sqrt(GridCanvas.area)
+					* GridCanvas.recSizeHeight()
+					- (vm.planeYCord.get() * 111.320 * Math.cos(Math.toRadians(GridCanvas.planeXcord.get())))
+							/ Math.sqrt(GridCanvas.area) * GridCanvas.recSizeHeight()),
+					vm.planeYCord));
+
 			GridCanvas.setOnMouseClicked((e) -> {
 				GridCanvas.destinationXcord.set(e.getX());
 				GridCanvas.destinationYcord.set(e.getY());

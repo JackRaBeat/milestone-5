@@ -2,7 +2,6 @@ package view;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -45,20 +44,6 @@ public class MapGrid extends Canvas {
 		this.destinationImage = destinationImage;
 		this.arrowImage = arrowImage;
 	}
-	
-	
-	public double ConvertToX(double latitude)
-	{
-		return -((110.54*(planeXcord.get() -initialX) / Math.sqrt(area))* recSizeWidth());
-	}
-	
-	public double ConvertToY(double longtitude)
-	{
-		return ((planeYcord.get()*111.320 * Math.cos(Math.toRadians(planeXcord.get())))/Math.sqrt(area) * recSizeHeight()-
-				(planeYcord.get()*111.320 * Math.cos(Math.toRadians(initialX)))/Math.sqrt(area) * recSizeHeight());
-	}
-	
-	
 	
 	
 	public double recSizeHeight() {return this.getHeight()  / this.mapData.length;}
@@ -104,17 +89,17 @@ public class MapGrid extends Canvas {
 		//if(!serverUp.get()) return;
 		gc.save();
 		gc.translate(x, y);
-		double degrees=this.old_rotation-d;
-		int mod=(int)(degrees)%360;
-		double to_rotate;
-		if(mod>0) to_rotate=degrees/(mod*360)+270;
-		else to_rotate=degrees+270;		
-		gc.rotate(to_rotate);
+		//double degrees=this.old_rotation-d;
+		//int mod=(int)(degrees)%360;
+		//double to_rotate;
+		//if(mod>0) to_rotate=degrees/(mod*360);
+		//else to_rotate=degrees;		
+		gc.rotate(d);
 		
 		gc.translate(-x, -y);
 		gc.drawImage(im, x - w/2, y - h/2, w, h);
 		gc.restore();
-		this.old_rotation=d;
+		//this.old_rotation=d;
 	}
 	 
 	public void redraw() {
@@ -140,13 +125,13 @@ public class MapGrid extends Canvas {
 			gc.drawImage(gridSnapshot, 0, 0);
 			
 			int imgSize = 5;
-			double x=ConvertToX(planeXcord.get());
-			double y=ConvertToY(planeYcord.get());
+			double x=planeXcord.get();
+			double y=planeYcord.get();
 			double direction=heading.get();
 			System.out.println("COORDS ARE: X: "+x+" Y: "+y);
 			System.out.println("HEADING IS: "+direction);
 
-			drawImage(gc,planeImage ,x,y,this.recSizeWidth() * imgSize , this.recSizeHeight() * imgSize ,direction-90);
+			drawImage(gc,planeImage ,x,y,this.recSizeWidth() * imgSize , this.recSizeHeight() * imgSize ,direction);
 			drawImage(gc,destinationImage ,destinationXcord.doubleValue(), destinationYcord.doubleValue(), this.recSizeWidth() * imgSize , this.recSizeHeight() * imgSize, 0);
 			drawSolutionPath();
 			}
