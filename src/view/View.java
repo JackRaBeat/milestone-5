@@ -183,8 +183,8 @@ public class View implements Initializable, Observer {
 
 			// scanning initial coordinates and the area of each cell (km^2)
 			String[] coordinates = list.get(0).split(",");
-			double initialX = Double.parseDouble(coordinates[1]);
-			double initialY = Double.parseDouble(coordinates[0]);
+			double initialLat = Double.parseDouble(coordinates[1]);
+			double initialLong = Double.parseDouble(coordinates[0]);
 			double area = Double.parseDouble(list.get(1).split(",")[0]);
 
 			// Scanning the heights matrix. Each cell is measured by meters.
@@ -196,25 +196,23 @@ public class View implements Initializable, Observer {
 				String[] data = list.get(i).split(",");
 				for (int j = 0; j < col; j++) {
 					mapData[i - 2][j] = Integer.parseInt(data[j]);
-					if (mapData[i - 2][j] == 0) {
-						mapData[i - 2][j] = 1;
+					if (mapData[i - 2][j] < 50) {
+						mapData[i - 2][j] = 50;
 					}
 				}
 			}
 			// this binding is relevant just after the map has loaded.
-			GridCanvas.setMapData(mapData, area, initialX, initialY);
+			GridCanvas.setMapData(mapData, area, initialLat, initialLong);
 
 			this.GridCanvas.planeYcord.bind(Bindings.createDoubleBinding(
-					() -> ((110.54 * ( vm.planeXCord.get() - GridCanvas.initialX) / Math.sqrt(GridCanvas.area))
-							* GridCanvas.recSizeWidth()),
-					vm.planeXCord));
-			this.GridCanvas.planeXcord.bind(Bindings.createDoubleBinding(() -> ((GridCanvas.planeYcord.get() * 111.320
-					* Math.cos(Math.toRadians(GridCanvas.initialX))) / Math.sqrt(GridCanvas.area)
-					* GridCanvas.recSizeHeight()
-					- (vm.planeYCord.get() * 111.320 * Math.cos(Math.toRadians(GridCanvas.planeXcord.get())))
-							/ Math.sqrt(GridCanvas.area) * GridCanvas.recSizeHeight()),
-					vm.planeYCord));
-
+					() -> ((110.54 * (GridCanvas.initialLat  - vm.planeLatCord.get()) / Math.sqrt(GridCanvas.area))
+							* GridCanvas.recSizeHeight()),vm.planeLatCord));
+			this.GridCanvas.planeXcord.bind(Bindings.createDoubleBinding(() -> (
+					
+					(111.320 *(vm.planeLongCord.get() -initialLong) * Math.cos(Math.toRadians(GridCanvas.initialLat  - vm.planeLatCord.get()))) / Math.sqrt(GridCanvas.area)
+					* GridCanvas.recSizeWidth()),vm.planeLongCord));
+			vm.planeLatCord.set(21.417460);
+			vm.planeLongCord.set(-157.918705);
 			GridCanvas.setOnMouseClicked((e) -> {
 				GridCanvas.destinationXcord.set(e.getX());
 				GridCanvas.destinationYcord.set(e.getY());
@@ -284,9 +282,11 @@ public class View implements Initializable, Observer {
 		}
 
 		// if already connected.
-		vm.solveProblem(GridCanvas.mapData, GridCanvas.planeXcord.get(), GridCanvas.planeYcord.get(),
-				GridCanvas.destinationXcord.get(), GridCanvas.destinationYcord.get(), GridCanvas.recSizeWidth(),
-				GridCanvas.recSizeHeight());
+		this.GridCanvas.startXcord = (int) (GridCanvas.planeXcord.get()/GridCanvas.recSizeWidth());
+		this.GridCanvas.startYcord = (int) (GridCanvas.planeYcord.get()/GridCanvas.recSizeHeight());
+		int destinationXcord =  (int) (GridCanvas.destinationXcord.get() / GridCanvas.recSizeWidth());
+		int destinationYcord = (int) (GridCanvas.destinationYcord.get()/ GridCanvas.recSizeHeight());
+		vm.solveProblem(GridCanvas.mapData,GridCanvas.startXcord, GridCanvas.startYcord,destinationXcord, destinationYcord);
 		this.GridCanvas.redraw();
 	}
 

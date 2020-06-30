@@ -19,8 +19,10 @@ public class MapGrid extends Canvas {
 	Image destinationImage;
 	Image arrowImage;
 	Image gridSnapshot;
-	public double initialX;
-	public double initialY;
+	public int startXcord;
+	public int startYcord;
+	public double initialLat;
+	public double initialLong;
 	public  DoubleProperty destinationXcord, destinationYcord;
 	public DoubleProperty planeXcord, planeYcord;//changes according to the model side 
 	public DoubleProperty heading;
@@ -49,12 +51,10 @@ public class MapGrid extends Canvas {
 	public double recSizeHeight() {return this.getHeight()  / this.mapData.length;}
 	public double recSizeWidth() { return this.getWidth()  / this.mapData[0].length;}
 	
-	public void setMapData(int[][] mapData, double area,double initialX,double initialY) {
+	public void setMapData(int[][] mapData, double area,double initialLat,double initialLong) {
 		this.mapData = mapData;
-		this.initialX=initialX;
-		this.initialY=initialY;
-		//this.destinationXcord.set(this.getWidth()/2 + this.getWidth()/5);
-		//this.destinationYcord.set(this.getHeight()/2 + this.getHeight()/5);
+		this.initialLat=initialLat;
+		this.initialLong=initialLong;
 		this.area = area;
 		redraw();
 	}
@@ -86,20 +86,12 @@ public class MapGrid extends Canvas {
 	}
 	
 	public void drawImage(GraphicsContext gc, Image im, double x, double y ,double w ,double h ,double d) {
-		//if(!serverUp.get()) return;
 		gc.save();
-		gc.translate(x, y);
-		//double degrees=this.old_rotation-d;
-		//int mod=(int)(degrees)%360;
-		//double to_rotate;
-		//if(mod>0) to_rotate=degrees/(mod*360);
-		//else to_rotate=degrees;		
+		gc.translate(x, y);	
 		gc.rotate(d);
-		
 		gc.translate(-x, -y);
 		gc.drawImage(im, x - w/2, y - h/2, w, h);
 		gc.restore();
-		//this.old_rotation=d;
 	}
 	 
 	public void redraw() {
@@ -123,15 +115,8 @@ public class MapGrid extends Canvas {
 				gridSnapshot = this.snapshot(null, null);
 			}
 			gc.drawImage(gridSnapshot, 0, 0);
-			
-			int imgSize = 5;
-			double x=planeXcord.get();
-			double y=planeYcord.get();
-			double direction=heading.get();
-			System.out.println("COORDS ARE: X: "+x+" Y: "+y);
-			System.out.println("HEADING IS: "+direction);
-
-			drawImage(gc,planeImage ,x,y,this.recSizeWidth() * imgSize , this.recSizeHeight() * imgSize ,direction);
+			int imgSize = 5;;
+			drawImage(gc,planeImage ,planeXcord.get(),planeYcord.get(),this.recSizeWidth() * imgSize , this.recSizeHeight() * imgSize ,heading.get());
 			drawImage(gc,destinationImage ,destinationXcord.doubleValue(), destinationYcord.doubleValue(), this.recSizeWidth() * imgSize , this.recSizeHeight() * imgSize, 0);
 			drawSolutionPath();
 			}
@@ -144,8 +129,8 @@ public class MapGrid extends Canvas {
 		double h=this.recSizeHeight();
 		String sol = solution.get();
 		if(sol!=null && sol != "") {
-			int desXDataCord = (int) (planeXcord.get() / w);//??
-			int desYDataCord = (int) (planeYcord.get() / h);
+			int desXDataCord = this.startXcord;
+			int desYDataCord = this.startYcord;
 			String n[] = sol.split(",");
 			int numsToAvg = 5;
 			double avg = 0;
@@ -169,8 +154,13 @@ public class MapGrid extends Canvas {
 					  avg += 270;
 					  desXDataCord--;
 					break;
+				
 				}
-			
+				if(desXDataCord < 0 || desYDataCord < 0 || desXDataCord > mapData[0].length || desYDataCord > mapData.length) {
+					System.out.println("EXCEPTION ON PATH CALCULATION-> desXDataCord:" + desXDataCord  + " desYDataCord:" +desYDataCord);
+					//this.solution = "";
+					return;
+				}
 				if(i % numsToAvg == numsToAvg - 1) {
 					drawImage(gc,arrowImage,w * desXDataCord, h * desYDataCord, w * 2, h * 2,(int) avg/numsToAvg);
 					avg = 0;

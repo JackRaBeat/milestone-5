@@ -21,11 +21,10 @@ public class SolverServerHandler {
 		}
 	}
 
-	public String solveProblem(int[][] mapGrid, double currentX, double currentY, double xDest, double yDest, double w,
-			double h) {
+	public String solveProblem(int[][] mapGrid, int currentX, int currentY, int xDest, int yDest) {
 		String map[] = formatMap(mapGrid);
-		String currentPos = formatLocation(currentX, currentY, w, h);
-		String destPos = formatLocation(xDest, yDest, w, h);
+		String currentPos = formatLocation(currentX, currentY);
+		String destPos = formatLocation(xDest, yDest);
 		/*
 		for(String line:map) System.out.println(line);
 		*/
@@ -64,10 +63,8 @@ public class SolverServerHandler {
 		return map;
 	}
 	// converts the actual position on the canvas onto the cell dimensions
-	private String formatLocation(double x, double y, double w, double h) {
-		String convertedX = (Integer.toString((int) (x / w)));
-		String convertedY = (Integer.toString((int) (y / h)));
-		return convertedX + "," + convertedY;
+	private String formatLocation(int x, int y) {
+		return x + "," + y;
 	}
 
 	public void close() {

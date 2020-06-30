@@ -70,9 +70,9 @@ public class Model extends Observable {
 		return  (SolverServerHandler.connection!=null);
 	}
 	
-	public void solveProblem(int[][] mapGrid, double currentX, double currentY, double xDest, double yDest, double w,double h)
+	public void solveProblem(int[][] mapGrid, int currentX, int currentY, int xDest, int yDest)
 	{
-		String sol = solvServerHandler.solveProblem(mapGrid,currentX,currentY,xDest, yDest,  w, h);
+		String sol = solvServerHandler.solveProblem(mapGrid,currentX,currentY,xDest, yDest);
 		if(sol == "") {System.out.println("ERROR ON READING LINE");}
 		passSolution(sol);
 	}
@@ -94,11 +94,11 @@ public class Model extends Observable {
 	{
 		return fliGearServerHandler.ds.get("/instrumentation/magnetic-compass/indicated-heading-deg");
 	}
-	public double getPlaneXCord()
+	public double getPlaneLatCord()
 	{
 		return fliGearServerHandler.ds.get("position/latitude-deg");
 	}
-	public double getPlaneYCord()
+	public double getPlaneLongCord()
 	{
 		return fliGearServerHandler.ds.get("position/longitude-deg");
 	}

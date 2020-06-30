@@ -17,7 +17,7 @@ import model.Model;
 
 public class ViewModel extends Observable implements Observer {
 	public StringProperty commandLineText, printAreaText,solution; // these are observable values
-	public DoubleProperty throttleVal, rudderVal, planeXCord, planeYCord, aileronVal, elevatorVal;
+	public DoubleProperty throttleVal, rudderVal, planeLatCord, planeLongCord, aileronVal, elevatorVal;
 	public DoubleProperty heading;
 	volatile boolean dataServAvailable;
 	public BooleanProperty serverUp;
@@ -30,8 +30,8 @@ public class ViewModel extends Observable implements Observer {
 		solution=new SimpleStringProperty("");
 		throttleVal = new SimpleDoubleProperty();
 		rudderVal = new SimpleDoubleProperty();
-		planeXCord = new SimpleDoubleProperty();
-		planeYCord = new SimpleDoubleProperty();
+		planeLatCord = new SimpleDoubleProperty();
+		planeLongCord = new SimpleDoubleProperty();
 		aileronVal = new SimpleDoubleProperty();
 		elevatorVal = new SimpleDoubleProperty();
 		heading = new SimpleDoubleProperty();
@@ -103,12 +103,13 @@ public class ViewModel extends Observable implements Observer {
     	   System.out.println("hey im here!!!");
     	  new Thread(()->{
     		   while(dataServAvailable) {
-    			   double x = model.getPlaneXCord();
-    			   double y =  model.getPlaneYCord();
+    			   double x = model.getPlaneLatCord();
+    			   double y =  model.getPlaneLongCord();
     			   double z = model.getHeading();
-    			   planeYCord.set(y);
+    			   planeLongCord.set(y);
     			   heading.set(z);
-    			   planeXCord.set(x);
+    			   planeLatCord.set(x);
+    			   System.out.println("BEFORE MANIPULATION: lat : " + x + " long " + y);
     			   try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {e.printStackTrace();}
@@ -131,8 +132,8 @@ public class ViewModel extends Observable implements Observer {
 		return (model.isConnectedToSolver());
 	}
 	
-	public void solveProblem(int[][] mapGrid, double currentX, double currentY, double xDest, double yDest, double w,double h)
+	public void solveProblem(int[][] mapGrid, int currentX, int currentY, int xDest, int yDest)
 	{
-		model.solveProblem(mapGrid,currentX,currentY,xDest, yDest,  w, h);	
+		model.solveProblem(mapGrid,currentX,currentY,xDest, yDest);	
 	}
 }
