@@ -40,12 +40,10 @@ public abstract class ConditionParser implements Command {
 		//saving the condition
 		//TODO: invoke the lexer function on the condition as well?
 		List<String> condition_list = new LinkedList<String>();
-		int i=idx;
-		for (;;i++) {//TODO: make this more beautiful
-			
+		int i;
+		for (i=idx;;i++){
 			String token=tokens[i];
-			if (token.equals("{"))
-				break;
+			if (token.equals("{")) break;
 			condition_list.add(token);
 		}
 		condition=new String[condition_list.size()];
@@ -53,7 +51,7 @@ public abstract class ConditionParser implements Command {
 
 		int open_curly = 1;
 		int close_curly = 0;
-		int block_end =i+1;//skip the block {
+		int block_end =i+1;
 		List<String> container = new LinkedList<String>();
 		// a way to detect our block boundaries
 		while (close_curly < open_curly) {

@@ -7,8 +7,6 @@ import model.interpreter.MyInterpreter;
 import model.interpreter.Variable.*;
 
 public class BindAssignmentCommand implements Command {
-
-	//TODO: compile a pattern which unites the =bind together as one element.
 	@Override
 	public int getArguments(String[] tokens, int idx, List<Object> emptyList) {
 		emptyList.add(tokens[idx-2]);//add the name first
@@ -20,8 +18,8 @@ public class BindAssignmentCommand implements Command {
 		String name=args.get(0).toString();
 		String identifier=args.get(1).toString();//either a path or a local var name.
 		//variable has been created before command invoking.
-		//binding to a script variable
-		if( MyInterpreter.SymbolTable.containsKey(identifier))
+		
+		if( MyInterpreter.SymbolTable.containsKey(identifier))  //binding to a script variable
 		{
 		  Var to_bound=MyInterpreter.SymbolTable.get(identifier);
 		  MyInterpreter.SymbolTable.put(name,new BoundScriptVar(to_bound));

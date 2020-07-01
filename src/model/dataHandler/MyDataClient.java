@@ -6,9 +6,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class MyDataClient implements DataClient {
-//TODO: realize where the connection of both server and client is invoked from.
-	public static Socket connection;// there will always be one connection even if the session is invoked in other
-									// contexts (manual and auto-pilot);
+	public static Socket connection;
 
 	@Override
 	public void connect(int port, String ip) {
@@ -25,9 +23,7 @@ public class MyDataClient implements DataClient {
 			OutputStream out = connection.getOutputStream();
 			PrintWriter UserOutput = new PrintWriter(out, true);
 			UserOutput.println("set" + " " + name + " " + value);
-			// after i send the value to the server it will make my local symbol-table
-			// change as well
-			// because of the server thread I'm running.
+			// after we send the value to the server it will make my local symbol-table change as well
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

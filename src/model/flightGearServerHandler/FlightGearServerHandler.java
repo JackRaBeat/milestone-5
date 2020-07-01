@@ -12,7 +12,6 @@ public class FlightGearServerHandler extends Observable {
 		ds=MyDataServer.getServer();
 		dc=new MyDataClient();
 	}
-//TODO: inform the client about the need to boot up the simulator software.
 	public void connect(String ip, int serverPort) {
 		System.out.println("waiting for simulator...");
 		Object lock = new Object();

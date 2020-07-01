@@ -17,7 +17,7 @@ public class Utilities {
 		}
 	}
 
-	// when calculating all kind of variables are only used regulary.
+	// when calculating all kind of variables are only used Regularly.
 	public static Var getVar(String name) {
 
 		if (MyInterpreter.SymbolTable.containsKey(name)) {

@@ -100,16 +100,11 @@ public class ViewModel extends Observable implements Observer {
     	   serverUp.setValue(true);
     	   dataServAvailable = true;
        //inform Eli we added those 2 variables to generic_small
-    	   System.out.println("hey im here!!!");
     	  new Thread(()->{
     		   while(dataServAvailable) {
-    			   double x = model.getPlaneLatCord();
-    			   double y =  model.getPlaneLongCord();
-    			   double z = model.getHeading();
-    			   planeLongCord.set(y);
-    			   heading.set(z);
-    			   planeLatCord.set(x);
-    			   System.out.println("BEFORE MANIPULATION: lat : " + x + " long " + y);
+    			   planeLongCord.set(model.getPlaneLongCord());
+    			   heading.set(model.getHeading());
+    			   planeLatCord.set(model.getPlaneLatCord());
     			   try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {e.printStackTrace();}

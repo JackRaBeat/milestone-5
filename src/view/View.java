@@ -144,8 +144,8 @@ public class View implements Initializable, Observer {
 			vm.connectToSimulator(serverInfo.getKey(), Integer.parseInt(serverInfo.getValue()));
 		});
 	}
-
-	public int[][] rescalemapData(int[][] mapData, int scaleDiv) {
+	//this method not used but can be use to rescale the size of the grid to have less rectangles
+	public int[][] RescaleMapData(int[][] mapData, int scaleDiv) {
 		int[][] scaledmapData = new int[mapData.length / scaleDiv][mapData[0].length / scaleDiv];
 		for (int i = 0; i < mapData.length; i += scaleDiv) {
 			for (int j = 0; j < mapData[0].length; j += scaleDiv) {
@@ -190,7 +190,6 @@ public class View implements Initializable, Observer {
 			// Scanning the heights matrix. Each cell is measured by meters.
 			int row = list.size() - 2;
 			int col = list.get(2).split(",").length;
-			System.out.println("rows: " + row + " cols: " + col);
 			int[][] mapData = new int[row][col];
 			for (int i = 2; i < row + 2; i++) {
 				String[] data = list.get(i).split(",");
@@ -201,18 +200,15 @@ public class View implements Initializable, Observer {
 					}
 				}
 			}
-			// this binding is relevant just after the map has loaded.
 			GridCanvas.setMapData(mapData, area, initialLat, initialLong);
-
+			
 			this.GridCanvas.planeYcord.bind(Bindings.createDoubleBinding(
-					() -> ((110.54 * (GridCanvas.initialLat  - vm.planeLatCord.get()) / Math.sqrt(GridCanvas.area))
-							* GridCanvas.recSizeHeight()),vm.planeLatCord));
-			this.GridCanvas.planeXcord.bind(Bindings.createDoubleBinding(() -> (
-					
-					(111.320 *(vm.planeLongCord.get() -initialLong) * Math.cos(Math.toRadians(GridCanvas.initialLat  - vm.planeLatCord.get()))) / Math.sqrt(GridCanvas.area)
-					* GridCanvas.recSizeWidth()),vm.planeLongCord));
-			//vm.planeLatCord.set(21.417460);
-			//vm.planeLongCord.set(-157.918705);
+					() -> ((110.54 * (GridCanvas.initialLat - vm.planeLatCord.get()) 
+							/ Math.sqrt(GridCanvas.area)) * GridCanvas.recSizeHeight()),vm.planeLatCord));
+			this.GridCanvas.planeXcord.bind(Bindings.createDoubleBinding(
+					() -> ((111.320 *(vm.planeLongCord.get() - GridCanvas.initialLong) * Math.cos(Math.toRadians(GridCanvas.initialLat - vm.planeLatCord.get())))
+							/ Math.sqrt(GridCanvas.area) * GridCanvas.recSizeWidth()),vm.planeLongCord));
+			
 			GridCanvas.setOnMouseClicked((e) -> {
 				GridCanvas.destinationXcord.set(e.getX());
 				GridCanvas.destinationYcord.set(e.getY());
@@ -224,20 +220,17 @@ public class View implements Initializable, Observer {
 				@Override
 				public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
 					GridCanvas.redraw();
-				}
-			});
+				}});
 			GridCanvas.planeYcord.addListener(new ChangeListener<Object>() {
 				@Override
 				public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
 					GridCanvas.redraw();
-				}
-			});
+				}});
 			GridCanvas.heading.addListener(new ChangeListener<Object>() {
 				@Override
 				public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
 					GridCanvas.redraw();
-				}
-			});
+				}});
 		}
 	}
 
@@ -269,9 +262,8 @@ public class View implements Initializable, Observer {
 			Platform.runLater(() -> ip.requestFocus());
 
 			dialog.setResultConverter(dialogButton -> {
-				if (dialogButton == loginButtonType) {
+				if (dialogButton == loginButtonType)
 					return new Pair<>(ip.getText(), port.getText());
-				}
 				return null;
 			});
 			Optional<Pair<String, String>> result = dialog.showAndWait();
@@ -296,9 +288,7 @@ public class View implements Initializable, Observer {
 			return;
 		if (vm.interpreterBusy())
 			vm.stop();
-		// takes down the current thread and allows another new context of
-		// interpretation
-		// to run.
+		// takes down the current thread and allows another new context of interpretation to run.
 		vm.printAreaText.set("");
 		vm.interpretText();
 	}

@@ -6,7 +6,7 @@ import model.Model;
 import model.interpreter.expressions.ExpressionCalculate;
 
 
-public class PrintCommand implements Command {//TODO: provide option to print a longer stream
+public class PrintCommand implements Command {
 	//with spaces.
 	Model m=Model.getInstance();
 	@Override

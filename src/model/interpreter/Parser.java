@@ -8,8 +8,7 @@ import model.interpreter.commands.CommandsMap;
 
 
 public class Parser {
-//the parser needs to know the commands..	
-	private CommandsMap mapper;// no need to make this static because we use the singleton design pattern!
+	private CommandsMap mapper;
 
 	private static class ParserHolder {
 		public static final Parser parser = new Parser();
@@ -31,7 +30,7 @@ public class Parser {
 			args.clear();// re-using an empty list for each command.
 			c = mapper.get(tokens[i]);// check whether the specific token is a command or not.
 			if (c != null) {
-				i += c.getArguments(tokens, i+1, args);// one line of calling the stringtoarg parser in each cmd.
+				i += c.getArguments(tokens, i+1, args);// one line of calling the stringToArg parser in each cmd.
 				c.doCommand(args);// the parser is the invoker
 			}
 

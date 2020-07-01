@@ -155,12 +155,6 @@ public class MapGrid extends Canvas {
 					break;
 				
 				}
-				/*
-				if(desXDataCord < 0 || desYDataCord < 0 || desXDataCord > mapData[0].length || desYDataCord > mapData.length) {
-					System.out.println("EXCEPTION ON PATH CALCULATION-> desXDataCord:" + desXDataCord  + " desYDataCord:" +desYDataCord);
-					//this.solution = "";
-					return;
-				}*/
 				if(i % numsToAvg == numsToAvg - 1) {
 					drawImage(gc,arrowImage,w * desXDataCord, h * desYDataCord, w * 2, h * 2,(int) avg/numsToAvg);
 					avg = 0;

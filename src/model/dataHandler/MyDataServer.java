@@ -73,8 +73,6 @@ public class MyDataServer implements DataServer {
 		open = true;
 		Thread server_thread = new Thread(() -> {
 
-			// its because of the connection!
-
 			try {
 				ServerSocket server = new ServerSocket(port);
 				// server.setSoTimeout(3000);
@@ -92,7 +90,7 @@ public class MyDataServer implements DataServer {
 			
 				// makes sure that the main thread waits for the server to boot-up and function.
 				// causes the main thread to wake up.
-				DataSynchronizer.resume(lock);// TODO: make sure to synchronize in the first boot-up
+				DataSynchronizer.resume(lock);
 				Model m = Model.getInstance();
 				m.notifyDataServerAvailable();
 				while (open) {
@@ -103,14 +101,11 @@ public class MyDataServer implements DataServer {
 				for (int x = 0; x < 10; x++) {
 					this.data_recieve(inputFromClient, freq);
 				}
-				// causes the main thread to wait for all of the relevant information to arrive
-				// and then continue.
+				// causes the main thread to wait for all of the relevant information to arrive and then continue. 
 				// tell the interpreter thread it's okay to keep going now.
 				DataSynchronizer.resume(lock);
-
 				aClient.close();
 				server.close();
-
 			} catch (IOException e) {
 				e.printStackTrace();
 			} 
