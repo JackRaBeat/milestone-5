@@ -76,33 +76,31 @@ public class View implements Initializable, Observer {
 		this.GridCanvas.serverUp.bind(this.vm.serverUp);
 		JoyStickCanvas.aileron.addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				if (!ManualButton.isSelected())
-					return;
-				vm.aileronSend();
+				if (ManualButton.isSelected()&& (GridCanvas.serverUp.get()))
+					vm.aileronSend();			
 			}
 		});
 
 		JoyStickCanvas.elevator.addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				if (!ManualButton.isSelected())
-					return;
-				vm.elevatorSend();
+				if (ManualButton.isSelected()&& (GridCanvas.serverUp.get()))
+					vm.elevatorSend();
+				
 			}
 		});
 
 	}
 
 	public void onRudderSliderChanged() {
-		if (!ManualButton.isSelected())
-			return;
-		vm.RudderSend();
+		if (ManualButton.isSelected()&& (GridCanvas.serverUp.get()))
+			vm.RudderSend();
+		
 	}
 
 	@FXML
 	public void onThrottleSliderChanged() {
-		if (!ManualButton.isSelected())
-			return;
-		vm.throttleSend();
+		if (ManualButton.isSelected()&& (GridCanvas.serverUp.get()))
+			vm.throttleSend();	
 	}
 
 	@FXML
@@ -271,6 +269,8 @@ public class View implements Initializable, Observer {
 			result.ifPresent(serverInfo -> {
 				vm.connectToSolver(serverInfo.getKey(), Integer.parseInt(serverInfo.getValue()));
 			});
+			
+			if(!result.isPresent()) return;
 		}
 
 		// if already connected.

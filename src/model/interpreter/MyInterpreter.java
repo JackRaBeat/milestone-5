@@ -15,7 +15,7 @@ public class MyInterpreter {
     //invoked when enabled is true
     //from now on we manage our sessions with stop.
 	public void interpret(String text) {
-		
+		if(text.equals("")) return;
 		interpretation_thread = new Thread(() -> {
 			
 			if(interpreterBusy())//to make sure the previous existing 
