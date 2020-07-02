@@ -40,19 +40,23 @@ public class ViewModel extends Observable implements Observer {
 	}
 
 	public void RudderSend() {
-		model.setVar("/controls/flight/rudder", rudderVal.get());
+		if(serverUp.get() == true)
+			model.setVar("/controls/flight/rudder", rudderVal.get());
 	}
 
 	public void throttleSend() {
-		model.setVar("/controls/engines/current-engine/throttle", throttleVal.get());
+		if(serverUp.get() == true)
+			model.setVar("/controls/engines/current-engine/throttle", throttleVal.get());
 	}
 	
 	public void aileronSend() {
-		model.setVar("/controls/flight/aileron", aileronVal.get());
+		if(serverUp.get() == true)
+			model.setVar("/controls/flight/aileron", aileronVal.get());
 	}
 	
 	public void elevatorSend() {
-		model.setVar("/controls/flight/elevator", elevatorVal.get());
+		if(serverUp.get() == true)
+			model.setVar("/controls/flight/elevator", elevatorVal.get());
 	}
 	
 	
